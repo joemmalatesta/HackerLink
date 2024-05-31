@@ -8,6 +8,7 @@ This is my repo for building out components. I'll merge it with my auth repo in 
 - Supabase (Auth/DB)
 - Tailwind w/ DaisyUI
 - Sentry (App Monitoring)
+- Resend (Emails)
 
 ### Dependencies 
 - [Drag and Drop Svelte package](https://www.npmjs.com/package/svelte-dnd-action)
