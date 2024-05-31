@@ -1,3 +1,5 @@
+import {sequence} from '@sveltejs/kit/hooks';
+import * as Sentry from '@sentry/sveltekit';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public'
 import { createServerClient } from '@supabase/ssr'
 import { redirect, type Handle } from '@sveltejs/kit'
@@ -6,7 +8,12 @@ import jwt from 'jsonwebtoken'
 import type { Session } from '@supabase/supabase-js'
 import type { SupabaseJwt } from './types.js'
 
-export const handle: Handle = async ({ event, resolve }) => {
+Sentry.init({
+    dsn: "https://6bef611d5f94c6e8cb4fb523e0bb06b7@o4507307873730560.ingest.us.sentry.io/4507352052269056",
+    tracesSampleRate: 1
+})
+
+export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
   event.locals.supabase = createServerClient(
     PUBLIC_SUPABASE_URL,
     PUBLIC_SUPABASE_ANON_KEY,
@@ -98,4 +105,5 @@ export const handle: Handle = async ({ event, resolve }) => {
       return name === 'content-range' || name === 'x-supabase-api-version'
     },
   })
-}
+})
+export const handleError = Sentry.handleErrorWithSentry();
