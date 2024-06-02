@@ -93,11 +93,6 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
    * If you'd rather do this in your routes, see (authenticated)/app/+page.server.ts
    * for an example.
    */
-  const auth_protected_paths = new Set(['app', 'self'])
-  if (!session && auth_protected_paths.has(event.url.pathname.split('/')[1])) {
-    console.log('redirect ')
-     redirect(307, '/auth')
-  }
    
 
   return resolve(event, {

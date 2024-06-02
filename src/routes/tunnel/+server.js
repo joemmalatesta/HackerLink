@@ -24,7 +24,6 @@ export const POST = async ({ request }) => {
 
     const upstream_sentry_url = `https://${SENTRY_HOST}/api/${project_id}/envelope/`;
     const response = await fetch(upstream_sentry_url, { method: "POST", body: envelope });
-    console.log("ok")
 
 
 

@@ -2,76 +2,78 @@ import { fail, redirect } from '@sveltejs/kit'
 import { AuthApiError, type Provider } from '@supabase/supabase-js'
 
 export const load = async ({ locals: { getSession } }) => {
+
   const session = await getSession()
+  console.log(`session in auth ` + session)
 
   /* User is already logged in. */
   if (session) redirect(303, '/forms')
 }
 
 export const actions = {
-  signup: async ({ request, url, locals: { supabase } }) => {
-    const formData = await request.formData()
-    const email = formData.get('email') as string
-    const password = formData.get('password') as string
+  // signup: async ({ request, url, locals: { supabase } }) => {
+  //   const formData = await request.formData()
+  //   const email = formData.get('email') as string
+  //   const password = formData.get('password') as string
 
-    if (!email || !password) {
-      return fail(400, {
-        error: 'Please enter an email and password',
-        data: {
-          email
-        }
-      })
-    }
+  //   if (!email || !password) {
+  //     return fail(400, {
+  //       error: 'Please enter an email and password',
+  //       data: {
+  //         email
+  //       }
+  //     })
+  //   }
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password
-    })
+  //   const { error } = await supabase.auth.signUp({
+  //     email,
+  //     password
+  //   })
 
-    if (error) 
-      console.error(error)
-    else
-      return { message: 'Please check your email to confirm your signup.' }
-  },
-  signin: async ({ request, locals: { supabase } }) => {
-    const formData = await request.formData()
-    const email = formData.get('email') as string
-    const password = formData.get('password') as string
+  //   if (error) 
+  //     console.error(error)
+  //   else
+  //     return { message: 'Please check your email to confirm your signup.' }
+  // },
+  // signin: async ({ request, locals: { supabase } }) => {
+  //   const formData = await request.formData()
+  //   const email = formData.get('email') as string
+  //   const password = formData.get('password') as string
 
-    if (!email || !password) {
-      return fail(400, {
-        error: 'Please enter an email and password',
-        data: {
-          email
-        }
-      })
-    }
+  //   if (!email || !password) {
+  //     return fail(400, {
+  //       error: 'Please enter an email and password',
+  //       data: {
+  //         email
+  //       }
+  //     })
+  //   }
     
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    })
+  //   const { error } = await supabase.auth.signInWithPassword({
+  //     email,
+  //     password
+  //   })
   
-    if (error) {
-      if (error instanceof AuthApiError && error.status === 400) {
-        return fail(400, {
-          error: 'Invalid credentials.',
-          data: {
-            email
-          }
-        })
-      }
-      return fail(500, {
-        error: 'Server error. Try again later.',
-        data: {
-          email
-        }
-      })
-    }
+  //   if (error) {
+  //     if (error instanceof AuthApiError && error.status === 400) {
+  //       return fail(400, {
+  //         error: 'Invalid credentials.',
+  //         data: {
+  //           email
+  //         }
+  //       })
+  //     }
+  //     return fail(500, {
+  //       error: 'Server error. Try again later.',
+  //       data: {
+  //         email
+  //       }
+  //     })
+  //   }
 
-    /* Login successful, redirect. */
-    redirect(303, '/forms')
-  },
+  //   /* Login successful, redirect. */
+  //   redirect(303, '/forms')
+  // },
   oauth: async ({ request, url, locals: { supabase }}) => {
     const formData = await request.formData()
     const provider = formData.get('provider') as Provider
@@ -92,35 +94,35 @@ export const actions = {
     /* Now authorize sign-in on browser. */
     if (data.url) redirect(303, data.url)
   },
-  magic: async ({ request, locals: { supabase }}) => {
-    const formData = await request.formData()
-    const email = formData.get('email') as string
+  // magic: async ({ request, locals: { supabase }}) => {
+  //   const formData = await request.formData()
+  //   const email = formData.get('email') as string
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email
-    })
+  //   const { error } = await supabase.auth.signInWithOtp({
+  //     email
+  //   })
 
-    if (!email) {
-      return fail(400, {
-        error: 'Please enter an email'
-      })
-    }
+  //   if (!email) {
+  //     return fail(400, {
+  //       error: 'Please enter an email'
+  //     })
+  //   }
 
-    if (error) 
-      console.error(error)
-    else
-      return { message: 'Please check your email to login.' }
-  },
-  anon: async ({ locals: { supabase }}) => {
-    const { error } = await supabase.auth.signInAnonymously()
+  //   if (error) 
+  //     console.error(error)
+  //   else
+  //     return { message: 'Please check your email to login.' }
+  // },
+  // anon: async ({ locals: { supabase }}) => {
+  //   const { error } = await supabase.auth.signInAnonymously()
 
-    if (error) {
-      return fail(500, {
-        error: 'Server error. Try again later.'
-      })
-    }
+  //   if (error) {
+  //     return fail(500, {
+  //       error: 'Server error. Try again later.'
+  //     })
+  //   }
 
-    /* Login successful, redirect. */
-    redirect(303, '/forms')
-  },
+  //   /* Login successful, redirect. */
+  //   redirect(303, '/forms')
+  // },
 }

@@ -3,8 +3,6 @@
   export let form
 
   $: ({ session } = data)
-  console.log('this is being rendered... at least')
-  $: console.log(session)
 </script>
 
 {#if session}

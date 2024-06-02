@@ -1,7 +1,6 @@
 import { fail, redirect } from "@sveltejs/kit"
 
 export const load = async ({ locals: { getSession } }) => {
-  console.log('')
   /**
    * Auth validation happens in hooks.server.ts, so there's
    * no need to check anything here.

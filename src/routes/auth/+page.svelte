@@ -23,12 +23,12 @@
 	</div>
 </main>
 
-{#if form?.message}
+<!-- {#if form?.message}
 	<p>{form.message}</p>
 {/if}
 {#if form?.error}
 	<p style="color: red;">{form.error}</p>
-{/if}
+{/if} -->
 
 
 

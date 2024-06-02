@@ -8,6 +8,7 @@
 
   let { supabase, session } = data
   $: ({ supabase, session } = data) 
+  
 
   onMount(() => {
     const {
@@ -23,5 +24,5 @@
 </script>
 
 <Navbar session={session} supabase={supabase}/>
-
+{@debug session}
 <slot />
