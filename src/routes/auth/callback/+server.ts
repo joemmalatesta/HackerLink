@@ -7,7 +7,6 @@ export const GET = async ({ url, locals: { supabase } }) => {
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      console.log('callback being hit and all is well :D', next)
       redirect(303, `/${next.slice(1)}`)
     }
   }

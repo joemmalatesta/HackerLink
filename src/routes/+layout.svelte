@@ -24,5 +24,5 @@
 </script>
 
 <Navbar session={session} supabase={supabase}/>
-{@debug session}
+
 <slot />
