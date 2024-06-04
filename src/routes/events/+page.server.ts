@@ -14,3 +14,9 @@
  *  if (!session) redirect(307, '/auth')
  * }
  */
+
+
+
+
+// Action for creating event that the modal will call
+// ?/createEvent
