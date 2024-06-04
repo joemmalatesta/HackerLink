@@ -5,24 +5,31 @@
 	export let supabase: SupabaseClient;
 
 	import { selectedEvent } from "../Store";
-	console.log('navbar sees' + $selectedEvent)
+	console.log("navbar sees" + $selectedEvent);
 	$: currentUrl = $page.url;
-	$: console.log(currentUrl.href)
+	$: console.log(currentUrl.href);
 </script>
 
 <nav class="flex justify-between items-center py-2 px-20 bg-gray-400/30">
 	<a href="/"><img src="favicon.png" alt="HackerLink Logo" class="w-14" /></a>
-
-	<div class="flex items-center justify-center text-lg font-semibold gap-4">
-		{#if session}
-			<!-- Update store to empty string to indicate no event selected so  -->
-			<a href="/events" on:click={() => {selectedEvent.update((setEvent) => '')}}>Events</a>
-			{#if $selectedEvent != '' && currentUrl.href.includes("/events")}
+	{#if session && $selectedEvent != "" && currentUrl.href.includes("/events")}
+		<div class="flex items-center justify-center text-lg font-semibold gap-4">
 			<a on:click={() => {}} href="{currentUrl.toString()}/form">Form</a>
 			<a href="{currentUrl.href}/response">Responses</a>
 			<a href="{currentUrl.href}/checkIn">Check In</a>
 			<a href="{currentUrl.href}/stats">Stats</a>
-			{/if}
+		</div>
+	{/if}
+
+	<div class="flex items-center justify-center text-lg font-semibold gap-4">
+		{#if session}
+			<!-- Update store to empty string to indicate no event selected so  -->
+			<a
+				href="/events"
+				on:click={() => {
+					selectedEvent.update((setEvent) => "");
+				}}>Events</a
+			>
 			<a href="/profile"
 				><img
 					class="w-10 rounded-full"
