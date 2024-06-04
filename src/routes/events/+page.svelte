@@ -30,4 +30,9 @@
 		<p class="text-2xl font-semibold">New Form</p>
 		<img src="/plus.svg" alt="Plus" />
 	</button>
+
+<form class="flex flex-col" method="post">
+	<input class="p-1 text-lg" type="text" name="message" placeholder="What does your email say">
+	<button class="p-2 bg-blue-400 rounded-lg">Send email</button>
+</form>
 </main>

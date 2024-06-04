@@ -13,8 +13,40 @@
  *  const session = await getSession()
  *  if (!session) redirect(307, '/auth')
  * }
+ * 
  */
 
+import { Resend } from 'resend';
+import { RESEND_KEY } from '$env/static/private';
+import type { Actions } from "./$types";
+export const actions = {
+	default: async ({request}) => {
+        const data = await request.formData();
+		const message = data.get('message');
+        console.log(data)
+        console.log(message)
+     
+
+const resend = new Resend(RESEND_KEY);
+
+// Via resend docs https://resend.com/docs/send-with-nodejs
+(async function () {
+  const { data, error } = await resend.emails.send({
+    from: 'Org Name <onboarding@resend.dev>',
+    to: ['joemmalatesta@gmail.com'],
+    subject: 'Hello World',
+    html: `${message}`,
+  });
+
+  if (error) {
+    return console.error({ error });
+  }
+
+  console.log({ data });
+})();
+
+	},
+} satisfies Actions;
 
 
 

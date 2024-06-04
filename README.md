@@ -24,3 +24,8 @@ This is my repo for building out components. I'll merge it with my auth repo in 
 - Write to tables with userID
 - Test resend API
 - I can get the userID from anywhere in the app. On account creation, do I need to map userID to email? or does it do that for me?
+
+
+### Issues
+- Right now my [event] slug sometimes redirects to favicon.png and messes up the routing. see [issue](https://github.com/sveltejs/kit/issues/3748)
+- I have no idea how to setup this DB...

@@ -14,11 +14,6 @@ Sentry.init({
 })
 
 export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
-  for (const param in event.params) {
-    const value = event.params[param];
-    if (value === 'favicon.png')
-        return new Response('Ugg!  One of those extra requests again!', { status: 400 });
-}
   event.locals.supabase = createServerClient(
     PUBLIC_SUPABASE_URL,
     PUBLIC_SUPABASE_ANON_KEY,
