@@ -1,9 +1,12 @@
 <script lang="ts">
 	import FormCard from "../../components/EventCard.svelte";
+	import CreateEventModal from '../../components/CreateEventModal.svelte'
 	import type { Event } from "../../lib/types";
 	export let events: Event[];
-	// Load forms from supabase for user on +pager.server.ts load function
+	
 
+	let showModal: boolean = false
+	// Load forms from supabase for user on +pager.server.ts load function
 	events = [
 		{
 			name: "GrizzHacks 6",
@@ -26,7 +29,7 @@
 	{#each events as event}
 		<FormCard {event} />
 	{/each}
-	<button class="w-40 h-40 bg-gray-300/60 hover:bg-gray-300/80 rounded-2xl flex flex-col items-center justify-center">
+	<button on:click={() => showModal = true} class="w-40 h-40 bg-gray-300/60 hover:bg-gray-300/80 rounded-2xl flex flex-col items-center justify-center">
 		<p class="text-2xl font-semibold">New Form</p>
 		<img src="/plus.svg" alt="Plus" />
 	</button>
@@ -35,4 +38,8 @@
 	<input class="p-1 text-lg" type="text" name="message" placeholder="What does your email say">
 	<button class="p-2 bg-blue-400 rounded-lg">Send email</button>
 </form>
+
+{#if showModal}
+	<CreateEventModal bind:showModal />
+{/if}
 </main>

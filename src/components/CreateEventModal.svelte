@@ -4,6 +4,7 @@
 	let dialog: HTMLDialogElement;
 
 	$: if (dialog && showModal) dialog.showModal();
+
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
@@ -14,10 +15,12 @@
 >
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div on:click|stopPropagation>
-		<slot name="header" />
-		<hr />
-		<slot />
-		<hr />
+		<form action="?/createNewForm" method="POST" class="flex flex-col">
+			<input type="text" placeholder="event name" name="eventName" class="p-1 rounded-md" required>
+			<input type="date" placeholder="when is your event?" name="eventDate" class="p-1 rounded-md" >
+			<input type="color" placeholder="what is your events primary color" name="primaryColor" class="p-1 rounded-md">
+			<button>Submit</button>
+		</form>
 		<!-- svelte-ignore a11y-autofocus -->
 		<button autofocus on:click={() => dialog.close()}>close modal</button>
 	</div>

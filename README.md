@@ -24,6 +24,7 @@ This is my repo for building out components. I'll merge it with my auth repo in 
 - Write to tables with userID
 - Test resend API
 - I can get the userID from anywhere in the app. On account creation, do I need to map userID to email? or does it do that for me?
+- Add resend key to vercel 
 
 
 ### Issues

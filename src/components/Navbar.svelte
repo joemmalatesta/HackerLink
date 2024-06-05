@@ -6,15 +6,11 @@
 	import { selectedEvent } from "../Store";
 	import { goto } from "$app/navigation";
 	$: currentUrl = $page.url;
-	$: console.log(currentUrl.href)
-	$: console.log($selectedEvent)
 
 	function handleRedirect(redirectTo: string) {
-		console.log('being hit')
 		const routes = ['responses', 'checkIn', 'stats', 'settings', 'form']
 		const lastRoute = currentUrl.href.split("/")[currentUrl.href.split('/').length - 1]
 		if (routes.includes(lastRoute)){
-			console.log('already in ' + lastRoute)
 			goto(currentUrl.href.replace(lastRoute, redirectTo))
 		}
 		else{

@@ -20,11 +20,13 @@ import { Resend } from 'resend';
 import { RESEND_KEY } from '$env/static/private';
 import type { Actions } from "./$types";
 export const actions = {
-	default: async ({request}) => {
+  createNewForm: async ({request}) => {
+    const data = await request.formData();
+
+  },
+	sendEmail: async ({request}) => {
         const data = await request.formData();
 		const message = data.get('message');
-        console.log(data)
-        console.log(message)
      
 
 const resend = new Resend(RESEND_KEY);

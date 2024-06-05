@@ -24,21 +24,19 @@
     }
 
     function handleConsider(event: CustomEvent<DndEvent<FormItem>>) {
-        console.log('considering')
         form = event.detail.items
     }
 
     function handleFinalize(event: CustomEvent<DndEvent<FormItem>>) {
-        console.log('finalize')
         form = event.detail.items
         console.log(form)
     }
 </script>
 
-<div class="w-60 h-screen bg-gray-200/30">
-<section class="h-full" use:dndzone={{ items: form, dropTargetStyle: {}, morphDisabled: true  }} on:consider="{handleConsider}" on:finalize="{handleFinalize}">
+<div class="w-60">
+<section class="h-full flex flex-col gap-1 m-1" use:dndzone={{ items: form, dropTargetStyle: {}, morphDisabled: true  }} on:consider="{handleConsider}" on:finalize="{handleFinalize}">
 	{#each form as question(question.id)}
-		<div class="flex justify-around items-center p-2 bg-gray-500/30">
+		<div class="flex rounded-md justify-around items-center p-2 bg-gray-500/30">
 			<p>{question.id}</p>
 			<p>{question.type}</p>
 		</div>
