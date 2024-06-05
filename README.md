@@ -29,3 +29,4 @@ This is my repo for building out components. I'll merge it with my auth repo in 
 ### Issues
 - Right now my [event] slug sometimes redirects to favicon.png and messes up the routing. see [issue](https://github.com/sveltejs/kit/issues/3748)
 - I have no idea how to setup this DB...
+- [form components](https://tailwindcss-forms.vercel.app/)

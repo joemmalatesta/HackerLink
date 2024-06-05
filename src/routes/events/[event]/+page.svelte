@@ -11,7 +11,7 @@
 
     // Set form from client 
     import { selectedEvent } from "../../../Store"
-    selectedEvent.update((setEvent) => event)
+    selectedEvent.update((setEvent) => event!)
 </script>
 
 <svelte:head>
