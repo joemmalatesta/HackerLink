@@ -7,6 +7,7 @@
 
 	import { selectedEvent } from "../Store";
 	import { goto } from "$app/navigation";
+	import { fade, fly, slide } from "svelte/transition";
 	$: currentUrl = $page.url;
 	
 	// Profile dropdown for easy access to settings or sign out
@@ -66,10 +67,12 @@
 	</div>
 </nav>
 {#if toggleProfileDropdown}
-<div  class="absolute right-0" use:clickOutside={() => toggleProfileDropdown = false}>
-	<div class="flex justify-end mr-20">
-		<div class="flex flex-col justify-center items-center">
+<div  class="absolute right-0" transition:slide={{duration: 100}} use:clickOutside={() => toggleProfileDropdown = false}>
+	<div class="flex justify-end mr-12">
+		<div class="flex flex-col justify-start items-center gap-1 text-lg bg-gray-400/30 p-1 px-4 rounded-b">
+
 			<a href="profile">Profile</a>
+			<div class="w-full border-t-2 border-gray-400/80 left-1/2"></div>
 			<!-- This is prone to failure. Seems good now but watch out.. -->
 			<form action="/profile?/signout" method="POST"><button>Sign Out</button></form>
 		</div>

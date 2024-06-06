@@ -5,39 +5,58 @@
 
 	$: if (dialog && showModal) dialog.showModal();
 
+
+	let primaryColor: string = '#c8d9f4'
+	let secondaryColor: string = '#ffdbe2'
+	let textColor: string = '#000'
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 <dialog
+	class="rounded-2xl drop-shadow-lg ring-2 ring-gray-400/60 ring-offset-1 ring-inset"
 	bind:this={dialog}
 	on:close={() => (showModal = false)}
 	on:click|self={() => dialog.close()}
 >
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div on:click|stopPropagation>
-		<form action="?/createNewForm" method="POST" class="flex flex-col">
-			<input type="text" placeholder="event name" name="eventName" class="p-1 rounded-md" required>
-			<input type="date" placeholder="when is your event?" name="eventDate" class="p-1 rounded-md" >
-			<input type="color" placeholder="what is your events primary color" name="primaryColor" class="p-1 rounded-md">
-			<button>Submit</button>
+	<div class="p-10" on:click|stopPropagation>
+		<h1 class="text-4xl font-semibold mb-5 text-center">Create New Event</h1>
+		<form action="?/saveEvent" method="POST" class="flex flex-col gap-2">
+			<div class="flex flex-col items-start">
+				<p class="text-sm">Event name</p>
+				<input type="text" placeholder="Your event's name" name="event_name" class="py-1 border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600 w-full">	
+			</div>
+			<div class="flex flex-col items-start">
+				<p class="text-sm">Description</p>
+				<textarea placeholder="Tell us about your event" name="description" class="placeholder:bottom-0 resize-none p-1 rounded-bl-md border-l border-b border-gray-400/60  w-full focus:outline-none focus:border-gray-600 text-gray-600" />	
+			</div>
+
+			<div class="flex justify-between gap-4">
+				<p>Primary Color</p>
+				<input type="text" class="border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600" bind:value={primaryColor}>
+				<input type="color" name="primary_color" class="w-12 rounded-md" bind:value={primaryColor}>
+			</div>
+			<div class="flex justify-between gap-4">
+				<p>Secondary Color</p>
+				<input type="text" class="border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600" bind:value={secondaryColor}>
+				<input type="color" name="secondary_color" class="w-12 rounded-md" bind:value={secondaryColor}>
+			</div>
+			<div class="flex justify-between gap-4 items-center">
+				<p>Text Color</p>
+				<input type="text" class="border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600" bind:value={textColor}>
+				<input type="color" name="text_color" class=" rounded-md w-12" bind:value={textColor}>
+			</div>
+
+			<button style={`background: linear-gradient( 90deg,${primaryColor},${secondaryColor}); color: ${textColor} `} class={`p-1 bg-gradient-to-r rounded-md from-[${primaryColor}] to-[${secondaryColor}]`}>Create Event</button>
 		</form>
 		<!-- svelte-ignore a11y-autofocus -->
-		<button autofocus on:click={() => dialog.close()}>close modal</button>
 	</div>
 </dialog>
 
+
 <style>
-	dialog {
-		max-width: 32em;
-		border-radius: 0.2em;
-		border: none;
-		padding: 0;
-	}
 	dialog::backdrop {
 		background: rgba(0, 0, 0, 0.3);
-	}
-	dialog > div {
-		padding: 1em;
 	}
 	dialog[open] {
 		animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);

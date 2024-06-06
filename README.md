@@ -25,6 +25,7 @@ This is my repo for building out components. I'll merge it with my auth repo in 
 - Test resend API
 - I can get the userID from anywhere in the app. On account creation, do I need to map userID to email? or does it do that for me?
 - Add resend key to vercel 
+- Store current color scheme in cookies like [Skeleton](https://www.skeleton.dev/docs/get-started) does and use it throughout the website.
 
 
 ### Issues

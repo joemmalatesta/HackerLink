@@ -1,12 +1,20 @@
-import { fail, redirect, type Actions } from "@sveltejs/kit";
+import { error, fail, redirect, type Actions } from "@sveltejs/kit";
 import type { Action } from "./$types";
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
 
-export const load = async ({ locals: { getSession } }: { locals: { getSession: any } }) => {
+export const load = async ({ locals: { getSession, supabase } }) => {
 	const session = await getSession();
 	// Make sure theres a mf logged in...
 	if (!session) redirect(307, "/auth");
-	return { session };
+	try {
+		const userId = (await supabase.auth.getUser()).data.user?.id;
+		const { data: profile, error } = await supabase.from("profiles").select("*").eq("id", userId).single();
+		return { session, organization: profile.organization, name: profile.name };
+	} catch (error) {
+		return fail(500, {
+			error: "No profile found...",
+		});
+	}
 };
 
 export const actions = {
@@ -17,36 +25,35 @@ export const actions = {
 		const email = (await supabase.auth.getUser()).data.user?.email;
 		const organization = formData.get("organization");
 		const name = formData.get("name");
-    
 
-		const { data: user, error } = await supabase.from("profiles").select(userId);
+		try {
+			// Get profile if user has one. if not, this returns null. (Should always return one though.)
+			const { data: profile, error } = await supabase.from("profiles").select("*").eq("id", userId).single();
 
-    console.log(user)
-		if (user) {
-			// Make new user
-      console.log('creating new user')
-			const { data, error } = await supabase
-				.from("profiles")
-				.insert({ id: userId, email, name, organization }).eq('id', userId)
-				
+			if (!profile) {
+				// Make new user
+				console.log("creating new user");
+				const { data, error } = await supabase.from("profiles").insert({ id: userId, email, name, organization }).eq("id", userId);
+			} else {
+				// Update user
+				console.log("updating " + profile.email);
+				const { data, error } = await supabase
+					.from("profiles")
+					.update({ organization: organization === "" ? profile.organization : organization, name: name === "" ? profile.name : name })
+					.eq("id", userId)
+					.select();
+			}
 
-        console.log(data, error)
-		} else {
-			// Update user
-      const { data, error } = await supabase
-  .from('profiles')
-  .upsert({ organization, name })
-  .eq('id', userId)
-  .select()
+			console.log(profile);
 
-  console.log('updated user ' + data)
+			return {
+				message: "profile saved",
+			};
+		} catch (e) {
+			return fail(500, {
+				error: e || "Something went wrong.",
+			});
 		}
-
-		console.log(user);
-
-		return {
-			message: "cool",
-		};
 	},
 	signout: async ({ locals: { supabase } }) => {
 		await supabase.auth.signOut();

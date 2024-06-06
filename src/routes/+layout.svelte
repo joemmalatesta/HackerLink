@@ -23,6 +23,10 @@
   })
 </script>
 
+<svelte:head>
+  <title>HackerLink</title>
+</svelte:head>
+
 <Navbar session={session}/>
 
 <slot />
