@@ -23,6 +23,6 @@
   })
 </script>
 
-<Navbar session={session} supabase={supabase}/>
+<Navbar session={session}/>
 
 <slot />

@@ -9,7 +9,9 @@ export interface Event{
 
 export interface User{
     id: string,
-    email: string
+    email: string,
+    organiztion: string,
+    name: string,
 }
 
 export interface Form {
