@@ -10,7 +10,7 @@
  * 
 */
 import { redirect } from '@sveltejs/kit'
-import type { Event } from '$lib/types'
+import type { Event, Question } from '$lib/types'
 
 
 export const load = async ({ locals: { getSession, supabase } }: {locals: {getSession: any, supabase: SupabaseClient}}) => {
@@ -50,14 +50,14 @@ export const actions = {
 		// Make new event
 		const { data, error } = await supabase
 			.from("events")
-			.insert([{ owner: email, ownerId: userId, primaryColor, secondaryColor, textColor, description, eventName }])
+			.insert([{ owner: email, ownerId: userId, primaryColor, secondaryColor, textColor, description, eventName, formQuestions: defaultFormData }])
 			.select();
 		if (error){
 			return fail(500, {
-				message: error
+				error
 			})}
 		return {
-			message: 'successfully updated profile'
+			success: 'successfully updated event'
 		}
 		
 	},
@@ -75,3 +75,28 @@ export const actions = {
 
 // Action for creating event that the modal will call
 // ?/createEvent
+
+
+let defaultFormData: Question[] = [
+	{
+	  "id": 1,
+	  "type": "shortAnswer",
+	  "title": "Where's the last place you traveled?"
+	},
+	{
+	  "id": 2,
+	  "type": "longAnswer",
+	  "title": "Why did you travel there?"
+	},
+	{
+	  "id": 3,
+	  "type": "multipleChoice",
+	  "title": "How was the weather?",
+	  "options": [
+		"Sunny",
+		"Rainy",
+		"Snowy",
+		"Overcast"
+	  ]
+	}
+  ]

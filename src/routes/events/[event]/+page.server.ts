@@ -9,11 +9,6 @@ export const load: ServerLoad = async ({ locals: { getSession }, fetch, params, 
 		console.log("no session getting events?");
 		redirect(303, "/auth");
 	}
-
-	
-
-
-	console.log(session.user.id);
 	return {
 		event: params.event,
 	};

@@ -3,20 +3,22 @@ import type { Actions } from "./$types";
 import { fail, redirect } from "@sveltejs/kit";
 import type { Question } from "$lib/types";
 
-export const load = async ({ locals: { getSession, supabase } }: {locals: {getSession: any, supabase: SupabaseClient}}) => {
-	const session: Session = await getSession()
-	 if (!session) redirect(307, '/auth')
-	   const { data, error } = await supabase
-				   .from("events")
-				   .select("formQuestions")
-				   .eq("ownerId", session.user.id)
+// export const load = async ({ locals: { getSession, supabase } }: {locals: {getSession: any, supabase: SupabaseClient}}) => {
+// 	const session: Session = await getSession()
+// 	 if (!session) redirect(307, '/auth')
+// 	   const { data, error } = await supabase
+// 				   .from("events")
+// 				   .select("formQuestions")
+// 					// Get by event ID
+// 					.eq('id', '')
+// 				   .eq("ownerId", session.user.id)
 	   
-	   if (!data) throw new Error(`${error.message}`)
-	   let questions: Question[] = data[2].formQuestions
-	   return {
-		   questions
-	   }
-	}
+// 	   if (!data) throw new Error(`${error.message}`)	 
+// 		const questions: Question[] = data[0].formQuestions
+// 	   return {
+// 		   questions
+// 	   }
+// 	}
 	   
 
 
