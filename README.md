@@ -30,3 +30,4 @@ This is my repo for building out components. I'll merge it with my auth repo in 
 - I have no idea how to setup this DB...
 - [form components](https://tailwindcss-forms.vercel.app/)
 - If the form ends with the word "form" it fucks up the routing..
+- Close "create new event" modal on click before processing so you don't accidentally add it twice
