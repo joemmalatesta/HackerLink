@@ -2,7 +2,7 @@ import { error, fail, redirect, type Actions } from "@sveltejs/kit";
 import type { Action } from "./$types";
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
 
-export const load = async ({ locals: { getSession, supabase } }) => {
+export const load = async ({ locals: { getSession, supabase } }: { locals: { getSession: any; supabase: SupabaseClient } }) => {
 	const session = await getSession();
 	// Make sure theres a mf logged in...
 	if (!session) redirect(307, "/auth");

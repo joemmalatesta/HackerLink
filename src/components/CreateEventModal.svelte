@@ -21,10 +21,10 @@
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div class="p-10" on:click|stopPropagation>
 		<h1 class="text-4xl font-semibold mb-5 text-center">Create New Event</h1>
-		<form action="?/saveEvent" method="POST" class="flex flex-col gap-2">
+		<form action="?/createNewEvent" method="POST" class="flex flex-col gap-2">
 			<div class="flex flex-col items-start">
 				<p class="text-sm">Event name</p>
-				<input type="text" placeholder="Your event's name" name="event_name" class="py-1 border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600 w-full">	
+				<input type="text" placeholder="Your event's name" name="eventName" class="py-1 border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600 w-full">	
 			</div>
 			<div class="flex flex-col items-start">
 				<p class="text-sm">Description</p>
@@ -34,17 +34,17 @@
 			<div class="flex justify-between gap-4">
 				<p>Primary Color</p>
 				<input type="text" class="border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600" bind:value={primaryColor}>
-				<input type="color" name="primary_color" class="w-12 rounded-md" bind:value={primaryColor}>
+				<input type="color" name="primaryColor" class="w-12 rounded-md" bind:value={primaryColor}>
 			</div>
 			<div class="flex justify-between gap-4">
 				<p>Secondary Color</p>
 				<input type="text" class="border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600" bind:value={secondaryColor}>
-				<input type="color" name="secondary_color" class="w-12 rounded-md" bind:value={secondaryColor}>
+				<input type="color" name="secondaryColor" class="w-12 rounded-md" bind:value={secondaryColor}>
 			</div>
 			<div class="flex justify-between gap-4 items-center">
 				<p>Text Color</p>
 				<input type="text" class="border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600" bind:value={textColor}>
-				<input type="color" name="text_color" class=" rounded-md w-12" bind:value={textColor}>
+				<input type="color" name="textColor" class=" rounded-md w-12" bind:value={textColor}>
 			</div>
 
 			<button style={`background: linear-gradient( 90deg,${primaryColor},${secondaryColor}); color: ${textColor} `} class={`p-1 bg-gradient-to-r rounded-md from-[${primaryColor}] to-[${secondaryColor}]`}>Create Event</button>

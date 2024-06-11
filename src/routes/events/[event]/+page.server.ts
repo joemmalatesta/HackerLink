@@ -1,6 +1,6 @@
 import { fail, redirect, type ServerLoad } from "@sveltejs/kit";
-import { selectedEvent } from "../../../Store";
 import type { Actions } from "./$types";
+
 
 export const load: ServerLoad = async ({ locals: { getSession }, fetch, params, cookies}) => {
 	const session = await getSession();
@@ -9,6 +9,8 @@ export const load: ServerLoad = async ({ locals: { getSession }, fetch, params, 
 		console.log("no session getting events?");
 		redirect(303, "/auth");
 	}
+
+	
 
 
 	console.log(session.user.id);

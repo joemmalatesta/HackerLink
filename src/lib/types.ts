@@ -1,10 +1,13 @@
 export interface Event{
     // Id probably
-    name: string,
-    submissionCount: number,
+    id: string,
+    eventName: string,
+    // submissionCount: number,
     primaryColor: string,
     secondaryColor: string,
-    // primaryColor: string,
+    textColor: string,
+    description: string,
+
 }
 
 export interface User{
@@ -15,16 +18,26 @@ export interface User{
 }
 
 export interface Form {
-    // ID probably
+    id: string,
     name: string
-    questionCount: number,
-    submissionCount: number,
-    // questions: []Question,
+    questions: Question[],
+    // submissionCount: number,
 }
 
 export interface Question {
     id: number,
     title: string,
-    // type: some enum
+    type: keyof typeof QuestionType,
+    options?: string[],
     // extras (checkboxes, etc, all dependant on question type)
+}
+
+enum QuestionType {
+    shortAnswer,
+    longAnswer,
+    multipleChoice,
+    trueFalse,
+    checkBoxes,
+    date,
+    fileUpload,
 }
