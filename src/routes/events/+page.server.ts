@@ -57,7 +57,7 @@ export const actions = {
 				error
 			})}
 		return {
-			success: 'successfully updated event'
+			success: 'Successfully Created Event 🎉'
 		}
 		
 	},

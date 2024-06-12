@@ -4,6 +4,7 @@
 	import Navbar from '../components/Navbar.svelte';
   import "../app.css";
 
+
   export let data
 
   let { supabase, session } = data
