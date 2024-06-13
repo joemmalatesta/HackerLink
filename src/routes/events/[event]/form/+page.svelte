@@ -2,11 +2,15 @@
 	import type { Question, QuestionType } from "$lib/types";
 	import { onMount } from "svelte";
 	import AddFormQuestionModal from "../../../../components/AddFormQuestionModal.svelte";
+	import toast, { Toaster } from 'svelte-french-toast';
 
 	import { dndzone, type DndEvent } from "svelte-dnd-action";
 
 	export let form;
 	$: console.log(form)
+	$: if (form?.success) toast.success(form?.success)
+	$: if (form?.error) toast.error(form?.error)
+
 	let questions: Question[];
 	let selectedQuestion = 1;
 	let eventId: string | null
@@ -114,3 +118,5 @@ function handleFormMessage() {
 		<AddFormQuestionModal bind:showNewQuestionModal on:submit={addNewQuestion} />
 	{/if}
 {/if}
+<!-- MF toaster this thing is lit -->
+<Toaster position={'bottom-center'} />
