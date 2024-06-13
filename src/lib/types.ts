@@ -32,7 +32,7 @@ export interface Question {
     // extras (checkboxes, etc, all dependant on question type)
 }
 
-enum QuestionType {
+export enum QuestionType {
     shortAnswer,
     longAnswer,
     multipleChoice,

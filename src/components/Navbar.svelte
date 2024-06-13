@@ -11,16 +11,21 @@
 	// Profile dropdown for easy access to settings or sign out
 	let toggleProfileDropdown = false;
 	// Close if page changes.
-	$: if ($navigating) toggleProfileDropdown = false;
+	$: if ($navigating) {
+		toggleProfileDropdown = false;
+	}
 
 	function handleRedirect(redirectTo: string) {
-		const routes = ["responses", "checkIn", "stats", "settings", "form"];
-		const lastRoute = currentUrl.href.split("/")[currentUrl.href.split("/").length - 1];
-		if (routes.includes(lastRoute)) {
-			goto(currentUrl.href.replace(lastRoute, redirectTo));
-		} else {
-			goto(currentUrl.href + "/" + redirectTo);
-		}
+		let parts = currentUrl.href.split("/");
+
+		// Remove the last segment
+		parts.pop();
+
+		// Join the remaining parts and append the new part
+		let newUrl = parts.join("/") + "/" + redirectTo;
+
+		// Example function call to redirect
+		goto(newUrl);
 	}
 </script>
 
@@ -80,7 +85,7 @@
 	<div class="absolute right-0" transition:slide={{ duration: 100 }} use:clickOutside={() => (toggleProfileDropdown = false)}>
 		<div class="flex justify-end mr-12">
 			<div class="flex flex-col justify-start items-center gap-1 text-lg bg-gray-400/30 p-1 px-4 rounded-b">
-				<a href="profile">Profile</a>
+				<a href="/profile">Profile</a>
 				<div class="w-full border-t-2 border-gray-400/80 left-1/2"></div>
 				<!-- This is prone to failure. Seems good now but watch out.. -->
 				<form action="/profile?/signout" method="POST"><button>Sign Out</button></form>

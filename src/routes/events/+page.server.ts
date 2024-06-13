@@ -50,7 +50,7 @@ export const actions = {
 		// Make new event
 		const { data, error } = await supabase
 			.from("events")
-			.insert([{ owner: email, ownerId: userId, primaryColor, secondaryColor, textColor, description, eventName, formQuestions: defaultFormData }])
+			.insert([{ owner: email, ownerId: userId, primaryColor, secondaryColor, textColor, description, eventName, draftFormQuestions: defaultFormData }])
 			.select();
 		if (error){
 			return fail(500, {

@@ -44,7 +44,6 @@ export const actions = {
 					.select();
 			}
 
-			console.log(profile);
 
 			return {
 				message: "profile saved",
