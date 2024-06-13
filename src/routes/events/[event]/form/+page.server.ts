@@ -35,11 +35,10 @@ export const actions = {
 		
 	},
 	publish: async ({ cookies, request, locals: { supabase } }) => {
-		console.log('publishing....')
 		let formData = await request.formData();
 		let questions: any = formData.get('questions')
 		questions = JSON.parse(String(questions)) as Question[]
-		let eventId = formData.get('eventId')
+		let eventId = formData.get('eventId') as string
 		const userId = (await supabase.auth.getUser()).data.user?.id;
 		const email = (await supabase.auth.getUser()).data.user?.email;
 		// Get current form data, compare if there is anything to update even...
@@ -52,32 +51,31 @@ export const actions = {
 		if (!getQuestions) throw new Error(selectError.message)
 		let currentFormQuestions = getQuestions[0].formQuestions
 		let currentFormId = getQuestions[0].currentFormId
-
+		// If they are the same, no need to go through and publish
 		if (JSON.stringify(currentFormQuestions) == JSON.stringify(questions)) return { error: "No changes to publish"}
+
+
 		// Before changing question data, check first if there are any responses tied to the current ID.
 		const { data: responses, error: responsesError } = await supabase
 		.from('responses').select("*").eq("formId", getQuestions[0].currentFormId)
 		if (responsesError) throw new Error(responsesError.message)
-		console.log(responses)
-
 		// If there is data in responses, add current ID to old Ids, otherwise just overwrite it.
-		if (responses.length == 0){
-			console.log('just continue')
-		}
-		else {
-			console.log('the ID to old Ids')
+		if (responses.length > 0){
+			await appendOldFormId(userId!, eventId, supabase)
 		}
 
+		
+		// With old form ID added to the history, feel free to overwrite the questions and the formId
 		const { data: insertData, error: insertError } = await supabase
 				   .from("events")
-				   .update([{formQuestions: questions}])
+				   .update([{formQuestions: questions, currentFormId: crypto.randomUUID}])
 					// Get by event ID
 					.eq('id', eventId)
 				   .eq("ownerId", userId)
 		if (insertError) throw new Error(insertError.message)
-		
+		console.log('published form for event ' + eventId)
 		return {
-			success: "Published Form Successfully"
+			success: "Published form successfully"
 		}
 
 		
@@ -102,4 +100,26 @@ function arraysEqual(arr1: Question[], arr2: Question[]) {
 		if (arr1[i].options !== arr2[i].options) return false;
 	}
 	return true;
+}
+
+
+async function appendOldFormId(userId: string, eventId: string, supabase: SupabaseClient) {
+	const { data, error } = await supabase
+				   .from("events")
+				   .select('pastFormIds, currentFormId')
+					// Get by event ID
+					.eq('id', eventId)
+				   .eq("ownerId", userId)
+	if (error) throw new Error(error.message)
+	let newIdArray = data[0].pastFormIds.push(data[0].currentFormId)
+	console.log(newIdArray)
+	const { data: updateData, error: updateError } = await supabase
+				   .from("events")
+				   .update([{pastFormIds: newIdArray}])
+					// Get by event ID
+					.eq('id', eventId)
+				   .eq("ownerId", userId)
+	if (updateError) throw new Error(updateError?.message)
+	console.log('Updated form Ids for '+ eventId)
+	return 'success'
 }

@@ -65,6 +65,10 @@ async function saveChanges(updatedQuestions: Question[]) {
 		});
 		return await response.json()
 }
+
+function handleFormMessage() {
+	
+}
 </script>
 
 <!-- ADD SKELETONS IF NOT BROTHER -->
