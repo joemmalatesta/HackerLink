@@ -29,5 +29,6 @@ This is my repo for building out components. I'll merge it with my auth repo in 
 - Right now my [event] slug sometimes redirects to favicon.png and messes up the routing. see [issue](https://github.com/sveltejs/kit/issues/3748)
 - I have no idea how to setup this DB...
 - [form components](https://tailwindcss-forms.vercel.app/)
-- If the form ends with the word "form" it fucks up the routing..
 - Close "create new event" modal on click before processing so you don't accidentally add it twice
+- Add unique URL to each form (start with slug -> url but allow to be customizable)
+  - This is key to get form questions.
