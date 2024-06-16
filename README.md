@@ -17,21 +17,22 @@ This is my repo for building out components. I'll merge it with my auth repo in 
 - I'm realizing this is going to be a cool use case for Sentry. Since I'll be making new sites for each form like TypeForm does, it's going to (I think) be a weird implementation to get Sentry on each form.
 
 ### Todo
-- Go over user story (actually think about what this is)
-- Class diagram :( 
 - Verify auth on each page
 - Design pages (learn figma finally?)
 - Store current color scheme in cookies like [Skeleton](https://www.skeleton.dev/docs/get-started) does and use it throughout the website.
-- Maybe make a separate layout group (event) once one is selected.
+- Separate layout group for `userFacing)` for those filling out the forms.
+- [form components](https://tailwindcss-forms.vercel.app/)
+- Change all `throw new Error (error.message)` to `return fail(error.code, error.message)`
+- UI Overhaul
+- Need to do form validation for profile and event settings. 
+- Ensure slug is unique
+  - For initial creation, just add random words like vercel until it's unique. 
+  - For updating, just return the request with if it's unique or not.
+
+
 
 
 ### Issues
-- Right now my [event] slug sometimes redirects to favicon.png and messes up the routing. see [issue](https://github.com/sveltejs/kit/issues/3748)
-- I have no idea how to setup this DB...
-- [form components](https://tailwindcss-forms.vercel.app/)
+- Right now my [event] slug sometimes redirects to favicon.png and messes up the routing. see [issue](https://github.com/sveltejs/kit/issues/3748) - Hasn't really been an issue.
 - Close "create new event" modal on click before processing so you don't accidentally add it twice
-- Add unique URL to each form (start with slug -> url but allow to be customizable)
-  - This is key to get form questions.
-- remove event ID and add to sveltekit store on server side. 
-- Need to do form validation for profile and event settings. 
-- BIG UI OVERHAUL and question / event creation modal
+- Switching after form publishing doesn't work bc we change last url part. (use enhance may help)
