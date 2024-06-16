@@ -32,3 +32,6 @@ This is my repo for building out components. I'll merge it with my auth repo in 
 - Close "create new event" modal on click before processing so you don't accidentally add it twice
 - Add unique URL to each form (start with slug -> url but allow to be customizable)
   - This is key to get form questions.
+- remove event ID and add to sveltekit store on server side. 
+- Need to do form validation for profile and event settings. 
+- BIG UI OVERHAUL and question / event creation modal

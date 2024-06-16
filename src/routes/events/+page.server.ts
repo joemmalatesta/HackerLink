@@ -41,7 +41,7 @@ export const actions = {
 		let formData = await request.formData();
 		const userId = (await supabase.auth.getUser()).data.user?.id;
 		const email = (await supabase.auth.getUser()).data.user?.email;
-		const eventName = formData.get("eventName");
+		const eventName = formData.get("eventName") as string; 
 		const description = formData.get("description");
         const primaryColor = formData.get('primaryColor')
         const secondaryColor = formData.get('secondaryColor')
@@ -50,7 +50,7 @@ export const actions = {
 		// Make new event
 		const { data, error } = await supabase
 			.from("events")
-			.insert([{ owner: email, ownerId: userId, primaryColor, secondaryColor, textColor, description, eventName, draftFormQuestions: defaultFormData }])
+			.insert([{ owner: email, ownerId: userId, primaryColor, secondaryColor, textColor, description, eventName, draftFormQuestions: defaultFormData, slug: slugify(eventName)}])
 			.select();
 		if (error){
 			return fail(500, {
@@ -68,9 +68,24 @@ export const actions = {
 		const email = (await supabase.auth.getUser()).data.user?.email;
 		const eventName = formData.get("event_name");
 		const eventDescription = formData.get("description");
-
-		
 	},
+
+	// Instead of redirecting to a superfluous page, just have the event component call this to set the cookie and handle redirect.
+	selectEvent: async ({cookies, request, locals: {supabase, getSession}}) => {
+	const session = await getSession();
+	// Fetch form given the username and formID
+	if (!session) {
+		console.log("no session getting events?");
+		redirect(303, "/auth");
+	}
+	const formData = await request.formData();
+	const eventId: string = formData.get('eventId') as string
+	cookies.set("eventId", eventId!, {path: '/'})
+	console.log('selected event ' + eventId + 'cookies set...')
+	const { data, error } = await supabase.from('events').select('eventName').eq('id', eventId).eq('ownerId', session.user.id)
+	if (!data) throw new Error(error.message)
+	redirect(303, `/events/${data[0].eventName}/form`)
+	}
 } satisfies Actions;
 
 // Action for creating event that the modal will call
@@ -100,3 +115,14 @@ let defaultFormData: Question[] = [
 	  ]
 	}
   ]
+
+
+
+  function slugify(str: string) {
+	str = str.replace(/^\s+|\s+$/g, ''); // trim leading/trailing white space
+	str = str.toLowerCase(); // convert string to lowercase
+	str = str.replace(/[^a-z0-9 -]/g, '') // remove any non-alphanumeric characters
+			 .replace(/\s+/g, '-') // replace spaces with hyphens
+			 .replace(/-+/g, '-'); // remove consecutive hyphens
+	return str;
+  }

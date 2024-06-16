@@ -41,3 +41,12 @@ export enum QuestionType {
     date,
     fileUpload,
 }
+
+
+export interface EventSettings {
+	slug: string;
+	eventName: string;
+	primaryColor: string;
+	secondaryColor: string;
+	textColor: string;
+}

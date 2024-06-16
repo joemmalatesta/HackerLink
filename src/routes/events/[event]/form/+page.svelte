@@ -5,28 +5,17 @@
 	import toast, { Toaster } from 'svelte-french-toast';
 
 	import { dndzone, type DndEvent } from "svelte-dnd-action";
-
+	export let data;
 	export let form;
-	$: console.log(form)
 	$: if (form?.success) toast.success(form?.success)
 	$: if (form?.error) toast.error(form?.error)
 
 	let questions: Question[];
 	let selectedQuestion = 1;
-	let eventId: string | null
+	let eventId: string | undefined
+	$: eventId = data.eventId
+	$: questions = data.questions
 
-	// Make call to server to pass info about the current event ID
-	onMount(async () => {
-		eventId = sessionStorage.getItem("eventId");
-		let response = await fetch("/api/GetFormQuestions", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ eventId: eventId }),
-		});
-		questions = await response.json();
-	});
 
 	// DNDZONE FUNCTIONS
 	function handleConsider(event: CustomEvent<DndEvent<Question>>) {
@@ -38,7 +27,7 @@
 		questions.forEach((question, index) => {
 			question.id = index + 1;
 		});
-		// Save Questions
+		// Save Questions each time the question order is changed.
 		await saveChanges(questions)
 	}
 
@@ -53,7 +42,7 @@
 		questions.push(newQuestion);
 		// Reassign the array to itself to trigger Svelte reactivity
 		questions = [...questions];
-		// Save Questions
+		// Save Questions when a new one is added.
 		await saveChanges(questions)
 		}
 
@@ -70,9 +59,6 @@ async function saveChanges(updatedQuestions: Question[]) {
 		return await response.json()
 }
 
-function handleFormMessage() {
-	
-}
 </script>
 
 <!-- ADD SKELETONS IF NOT BROTHER -->
