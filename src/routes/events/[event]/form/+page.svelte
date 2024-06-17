@@ -5,6 +5,7 @@
 	import toast, { Toaster } from 'svelte-french-toast';
 
 	import { dndzone, type DndEvent } from "svelte-dnd-action";
+	import { enhance } from "$app/forms";
 	export let data;
 	export let form;
 	$: if (form?.success) toast.success(form?.success)
@@ -93,7 +94,7 @@ async function saveChanges(updatedQuestions: Question[]) {
 		<section class="outline w-full">
 			{questions[selectedQuestion].title}
 
-			<form action="?/publish" method="POST">
+			<form use:enhance action="?/publish" method="POST">
 				<input type="text" name="eventId" bind:value={eventId} class="hidden">
 				<input name="questions" value={JSON.stringify(questions)} class="hidden">
 				<button class="bg-blue-200 p-2 rounded-md hover:bg-blue-300">Publish form</button>
