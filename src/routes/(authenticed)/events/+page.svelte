@@ -1,7 +1,7 @@
 <script lang="ts">
-	import EventCard from "../../components/EventCard.svelte";
-	import CreateEventModal from "../../components/CreateEventModal.svelte";
-	import type { Event } from "../../lib/types";
+	import EventCard from "../../../components/EventCard.svelte";
+	import CreateEventModal from "../../../components/CreateEventModal.svelte";
+	import type { Event } from "../../../lib/types";
 	export let data;
 	export let form;
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Question, QuestionType } from "$lib/types";
 	import { onMount } from "svelte";
-	import AddFormQuestionModal from "../../../../components/AddFormQuestionModal.svelte";
+	import AddFormQuestionModal from "../../../../../components/AddFormQuestionModal.svelte";
 	import toast, { Toaster } from 'svelte-french-toast';
 
 	import { dndzone, type DndEvent } from "svelte-dnd-action";
