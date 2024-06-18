@@ -4,7 +4,7 @@
 </script>
 
 <main class="w-screen h-[60vh] flex justify-center items-center flex-col">
-	<h1 class="text-5xl font-semibold my-6">Sign into HackerLink</h1>
+	<h1 class="text-5xl font-semibold my-6">Sign into HackerSight</h1>
 	<div class="flex flex-col p-10 justify-center items-center w-1/2">
 		<form method="POST" action="?/oauth" class="flex justify-around w-full flex-col items-center gap-4">
 			<button

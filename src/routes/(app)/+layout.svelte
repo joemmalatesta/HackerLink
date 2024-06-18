@@ -23,14 +23,14 @@
 </script>
 
 <svelte:head>
-	<title>HackerLink</title>
+	<title>HackerSight</title>
 </svelte:head>
 
 <main class="min-h-screen flex flex-col">
-  <div class="h-20">
-      <Navbar {session} />
-  </div>
-  <div class="flex-grow">
-      <slot />
-  </div>
+	<div class="h-20">
+		<Navbar {session} />
+	</div>
+	<div class="flex-grow">
+		<slot />
+	</div>
 </main>

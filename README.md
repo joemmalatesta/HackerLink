@@ -1,4 +1,4 @@
-# HackerLink
+# HackerSight
 an app for hackathon organizers that streamlines the hacker check-in starting from the form submission.
 
 This is my repo for building out components. I'll merge it with my auth repo in due time...
