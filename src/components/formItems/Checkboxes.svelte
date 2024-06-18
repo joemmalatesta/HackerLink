@@ -3,7 +3,7 @@
 
 	export let question: Question;
 	export let currentAnswer;
-	let options: string[] = question.options as string[]
+	let options: string[] = question.options as string[];
 </script>
 
 {#each options as option}

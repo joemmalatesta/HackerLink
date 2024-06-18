@@ -26,20 +26,13 @@ export interface Form {
 export interface Question {
 	id: number;
 	title: string;
-	type: keyof typeof QuestionType;
+	type: QuestionType;
 	options?: string[];
 	// extras (checkboxes, etc, all dependant on question type)
 }
 
-export enum QuestionType {
-	shortAnswer,
-	paragraph,
-	multipleChoice,
-	trueFalse,
-	checkBoxes,
-	date,
-	fileUpload,
-}
+export type QuestionType = "shortAnswer" | "paragraph" | "multipleChoice" | "trueFalse" | "checkBoxes" | "date" | "fileUpload";
+
 
 export interface EventSettings {
 	slug: string;

@@ -9,14 +9,16 @@ export const load: ServerLoad = async ({locals: { getSession, supabase }, cookie
 	 const eventId = cookies.get('eventId')
 	   const { data, error } = await supabase
 				   .from("events")
-				   .select("draftFormQuestions")
+				   .select("draftFormQuestions, eventName")
 					// Get by event ID
 					.eq('id', eventId)
 				   .eq("ownerId", session.user.id)
 	   if (!data) throw new Error(`${error.message}`)	 
 		const questions: Question[] = data[0].draftFormQuestions
+	   const eventName: string = data[0].eventName
+
 	   return {
-		   questions, eventId
+		   questions, eventId, eventName
 	   }
 	}
 	   

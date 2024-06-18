@@ -2,10 +2,13 @@
 	import EventCard from "../../../components/EventCard.svelte";
 	import CreateEventModal from "../../../components/CreateEventModal.svelte";
 	import type { Event } from "../../../lib/types";
+	import toast, { Toaster } from "svelte-french-toast";
+
 	export let data;
 	export let form;
+	$: if (form?.success) toast.success(form.success);
+	// $: if (form?.error) toast.error(form.error)
 
-	
 	let events: Event[];
 	$: events = data?.events;
 
@@ -34,3 +37,4 @@
 		<CreateEventModal bind:showModal />
 	{/if}
 </main>
+<Toaster position={"bottom-center"} />
