@@ -33,7 +33,7 @@ export interface Question {
 
 export enum QuestionType {
 	shortAnswer,
-	longAnswer,
+	paragraph,
 	multipleChoice,
 	trueFalse,
 	checkBoxes,

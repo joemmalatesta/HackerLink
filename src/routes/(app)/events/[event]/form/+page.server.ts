@@ -15,7 +15,6 @@ export const load: ServerLoad = async ({locals: { getSession, supabase }, cookie
 				   .eq("ownerId", session.user.id)
 	   if (!data) throw new Error(`${error.message}`)	 
 		const questions: Question[] = data[0].draftFormQuestions
-		console.log(questions)
 	   return {
 		   questions, eventId
 	   }

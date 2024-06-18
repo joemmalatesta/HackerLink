@@ -6,9 +6,9 @@
 	import MultipleChoice from "../../../components/formItems/MultipleChoice.svelte";
 	import TrueFalse from "../../../components/formItems/TrueFalse.svelte";
 	import ShortAnswer from "../../../components/formItems/ShortAnswer.svelte";
-	import LongAnswer from "../../../components/formItems/LongAnswer.svelte";
 	import { browser } from "$app/environment";
 	import { fly, slide } from "svelte/transition";
+	import Paragraph from "../../../components/formItems/Paragraph.svelte";
 	export let data;
 
 	let questions: Question[];
@@ -33,19 +33,19 @@
 	}
 </script>
 
-<div class="absolute left-1/2 -translate-x-1/2 bottom-1/2 ">
+<div class="absolute left-1/2 -translate-x-1/2 bottom-1/2">
 	{#key activeQuestion}
 		<div class="gap-3 flex flex-col justify-start items-start" transition:slide={{ duration: 300 }}>
 			<h1 class="text-3xl">{activeQuestion.title}</h1>
 			{#if activeQuestion.type == "shortAnswer"}
 				<ShortAnswer question={activeQuestion} bind:currentAnswer />
-			{:else if activeQuestion.type == "longAnswer"}
-				<LongAnswer question={activeQuestion} bind:currentAnswer />
+			{:else if activeQuestion.type == "paragraph"}
+				<Paragraph question={activeQuestion} bind:currentAnswer />
 			{:else if activeQuestion.type == "multipleChoice"}
 				<MultipleChoice question={activeQuestion} bind:currentAnswer />
 			{:else if activeQuestion.type == "trueFalse"}
 				<TrueFalse question={activeQuestion} bind:currentAnswer />
-			<!-- {:else if activeQuestion.type == "date"} -->
+				<!-- {:else if activeQuestion.type == "date"} -->
 				<!-- <Date question={activeQuestion} bind:currentAnswer /> -->
 			{:else if activeQuestion.type == "fileUpload"}
 				<FileUpload question={activeQuestion} bind:currentAnswer />
@@ -55,11 +55,11 @@
 
 			<div class="flex w-full gap-4">
 				{#if currentQuestionId >= 1}
-				<button
-					on:click={() => {
-						currentQuestionId -= 1;
-					}}>Previous</button
-				>
+					<button
+						on:click={() => {
+							currentQuestionId -= 1;
+						}}>Previous</button
+					>
 				{/if}
 				{#if currentQuestionId == questions.length - 1}
 					<button on:click={handleSubmit}>Submit</button>

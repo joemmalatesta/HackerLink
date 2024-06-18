@@ -70,14 +70,13 @@
 			<button on:click={() => (toggleProfileDropdown = !toggleProfileDropdown)}
 				><img
 					class="w-10 rounded-full"
-					src={session.user.user_metadata.avatar_url ?? "https://api.dicebear.com/8.x/fun-emoji/svg"}
+					src={session.user.user_metadata.avatar_url ?? "/defaultProfile.webp"}
 					alt="person_avatar"
 					title={session.user.email}
 				/>
 			</button>
 		{:else}
-			<a href="/auth"><button>Login</button></a>
-			<a href="/auth"><button>Sign up</button></a>
+			<a href="/auth"><button>Sign in</button></a>
 		{/if}
 	</div>
 </nav>

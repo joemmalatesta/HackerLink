@@ -1,26 +1,28 @@
 <script lang="ts">
 	import type { Question, QuestionType } from "$lib/types";
-    import { createEventDispatcher } from 'svelte';
-    const dispatch = createEventDispatcher<{submit:{newQuestion:Question}}>();
-
+	import { createEventDispatcher } from "svelte";
+	const dispatch = createEventDispatcher<{ submit: { newQuestion: Question } }>();
 
 	export let showNewQuestionModal: boolean;
-    let options: string[] | undefined
-    let title: string
-    let type: keyof typeof QuestionType
-    
+	let options: string[] | undefined;
+	let title: string;
+	let type: keyof typeof QuestionType;
+	const possibleTypes = ["shortAnswer", "paragraph", "multipleChoice", "trueFalse", "checkBoxes", "date", "fileUpload"];
+
 	let dialog: HTMLDialogElement;
 
 	$: if (dialog && showNewQuestionModal) dialog.showModal();
 
-
-    // Flow of the component realistically should be Question type -> Title/Question -> Options if needed
-    function submitNewQuestion() {
-        let newQuestion: Question = {
-            type, title, options, id:  0
-        }
-		dispatch('submit', {
-			newQuestion
+	// Flow of the component realistically should be Question type -> Title/Question -> Options if needed
+	function submitNewQuestion() {
+		let newQuestion: Question = {
+			type,
+			title,
+			options,
+			id: 0,
+		};
+		dispatch("submit", {
+			newQuestion,
 		});
 	}
 </script>
@@ -34,36 +36,22 @@
 >
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div class="p-10">
-        <form action="">
-            <div class="flex flex-col gap-4">
-                <div>
-                    <p>Whats the type of Question</p>
-                    <select bind:value={type}>
-                        <option value="shortAnswer">Short Answer</option>
-                        <option value="longAnswer">Long Answer</option>
-                        <option value="multipleChoice">multiple Choice</option>
-                        <option value="trueFalse">True or False</option>
-                        <option value="checkBoxes">CheckBoxes</option>
-                        <option value="date">Date</option>
-                        <option value="fileUpload">File Upload</option>
-                      </select>
-                </div>
-                <div>
-                    <p>What is your question?</p>
-                    <input type="text" bind:value={title} placeholder="How's your day?">
-                </div>
-                <!-- <div>
-                    <p>Options</p>
-                    <input type="text">
-                </div> -->
-            </div>
-            <button type="submit" on:click={() => {
-                submitNewQuestion();
-                showNewQuestionModal = false;
-            }}>Add Question</button>
+		{#if !type}
+			<div class="grid lg:grid-cols-3 grid-cols-2 gap-3">
+				{#each possibleTypes as possibleType}
+					<div class="flex items-center">
+						<div class="w-3/4">
+							{possibleType}
+						</div>
+						<div class="w-1/4">
+							<img class="w-10 h-10" src={`/icons/${possibleType}.svg`} alt={possibleType}>
+						</div>
+					</div>
+				{/each}
+			</div>
+		{/if}
 	</div>
 </dialog>
-
 
 <style>
 	dialog::backdrop {
