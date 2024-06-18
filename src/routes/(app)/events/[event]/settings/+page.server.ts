@@ -8,7 +8,7 @@ export const load: ServerLoad = async ({ cookies, locals: { getSession, supabase
 	const eventId = cookies.get("eventId");
 	const { data, error } = await supabase
 		.from("events")
-		.select("slug, eventName, primaryColor, secondaryColor, textColor")
+		.select("slug, eventName, primaryColor, secondaryColor, textColor, description")
 		// Get by event ID
 		.eq("id", eventId)
 		.eq("ownerId", session.user.id);
@@ -22,16 +22,22 @@ export const load: ServerLoad = async ({ cookies, locals: { getSession, supabase
 };
 
 export const actions: Actions = {
-	publish: async ({ cookies, request, locals: { supabase } }) => {
+	update: async ({ cookies, request, locals: { supabase } }) => {
 		const formData = await request.formData()
 		let slug = formData.get('slug')
 		let eventName = formData.get('eventName')
+		let description = formData.get('description')
 		let primaryColor = formData.get('primaryColor')
-		let seondaryColor = formData.get('secondaryColor')
+		let secondaryColor = formData.get('secondaryColor')
 		let textColor = formData.get('textColor')
-		supabase.from('events').update([{
-			// How do I not insert... Maybe I should just have values set to the shit I got from data.
-		}])
+
+		// Do some validation shit here. Make sure slug is a valid slug
+
+		const {data,error} = await supabase.from('events').update([{
+			slug, eventName, description, primaryColor, secondaryColor, textColor
+		}]).eq('ownerId', (await supabase.auth.getSession()).data.session?.user.id)
+		if (error) throw new Error(error.message)
+		
 
 	},
 } satisfies Actions;

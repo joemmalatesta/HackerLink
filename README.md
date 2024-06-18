@@ -28,6 +28,7 @@ This is my repo for building out components. I'll merge it with my auth repo in 
 - Ensure slug is unique
   - For initial creation, just add random words like vercel until it's unique. 
   - For updating, just return the request with if it's unique or not.
+- Add *required* option for form questions
 
 
 
@@ -35,3 +36,4 @@ This is my repo for building out components. I'll merge it with my auth repo in 
 ### Issues
 - Right now my [event] slug sometimes redirects to favicon.png and messes up the routing. see [issue](https://github.com/sveltejs/kit/issues/3748) - Hasn't really been an issue.
 - Close "create new event" modal on click before processing so you don't accidentally add it twice
+- Unexpected json when publishing more than once (something to do with use:enhance perhaps?)

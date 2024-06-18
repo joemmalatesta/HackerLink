@@ -9,6 +9,7 @@
 	let primaryColor: string = '#c8d9f4'
 	let secondaryColor: string = '#ffdbe2'
 	let textColor: string = '#000'
+	let buttonType: any = 'submit'
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
@@ -47,6 +48,7 @@
 				<input type="color" name="textColor" class=" rounded-md w-12" bind:value={textColor}>
 			</div>
 
+			<!-- Change button type programatically? to fix double submission  -->
 			<button style={`background: linear-gradient( 90deg,${primaryColor},${secondaryColor}); color: ${textColor} `} class={`p-1 bg-gradient-to-r rounded-md from-[${primaryColor}] to-[${secondaryColor}]`}>Create Event</button>
 		</form>
 		<!-- svelte-ignore a11y-autofocus -->
