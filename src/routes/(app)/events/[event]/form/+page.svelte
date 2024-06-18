@@ -73,13 +73,13 @@ async function saveChanges(updatedQuestions: Question[]) {
 				on:finalize={handleFinalize}
 			>
 				{#each questions as question, index (question.id)}
-					<button on:click={() => (selectedQuestion = index)} class="h-12 flex gap-3 rounded-md justify-around p-2 w-60 outline">
-						<div class="flex flex-col items-center justify-around h-full">
-							<p class="font-semibold">{question.id}</p>
-							<img src={`/icons/${question.type}.svg`} class="w-4" alt={question.type} />
+					<button on:click={() => (selectedQuestion = index)} class={`h-12 flex rounded-md justify-around w-60 gap-1 ${index % 2 == 0 ? "bg-gray-300": "bg-white"}`}>
+						<div class="w-1/4 flex flex-col items-center justify-around h-full">
+							<p class="font-semibold text-sm">{question.id}</p>
+							<img src={`/icons/${question.type}.svg`} height="12" width="20" alt={question.type} />
 						</div>
-
-						<p class="flex justify-start items-start">{question.title}</p>
+						<!-- Figure out how to get ... if it's too long -->
+						<p class="h-12 w-3/4 overflow-ellipsis overflow-hidden flex items-start justify-st">{question.title}</p>
 					</button>
 					<!-- <div class="border-b border-gray-400/40 w-11/12 self-center"></div> -->
 				{/each}
@@ -91,7 +91,7 @@ async function saveChanges(updatedQuestions: Question[]) {
 				}}>Add Question</button
 			>
 		</div>
-		<section class="outline w-full">
+		<section class="w-full">
 			{questions[selectedQuestion].title}
 
 			<form use:enhance action="?/publish" method="POST">
