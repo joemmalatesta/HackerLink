@@ -30,6 +30,7 @@ export const actions: Actions = {
 		let primaryColor = formData.get('primaryColor')
 		let secondaryColor = formData.get('secondaryColor')
 		let textColor = formData.get('textColor')
+		const eventId = cookies.get('eventId')
 
 		console.log("editing slug to be " + slug)
 		// Do some validation shit here. Make sure slug is a valid slug
@@ -40,13 +41,11 @@ export const actions: Actions = {
 			}
 		}
 
-		const session = await getSession()
-
 		const {data: slugData, error: getSlugError} = await supabase.from('events').select('slug')
 		console.log(slugData)
 		const {data,error} = await supabase.from('events').update([{
 		 	slug, eventName, description, primaryColor, secondaryColor, textColor
-		}]).eq('ownerId', session?.user.id)
+		}]).eq('id', eventId)
 		console.log(error?.message)
 		if (error?.message.includes('duplicate key')) return { error: 'duplicate slug'}
 		if (error) throw new Error(error.message)
