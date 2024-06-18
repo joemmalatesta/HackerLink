@@ -82,9 +82,9 @@ export const actions = {
 	const eventId: string = formData.get('eventId') as string
 	cookies.set("eventId", eventId!, {path: '/'})
 	console.log('selected event ' + eventId + 'cookies set...')
-	const { data, error } = await supabase.from('events').select('eventName').eq('id', eventId).eq('ownerId', session.user.id)
+	const { data, error } = await supabase.from('events').select('slug').eq('id', eventId).eq('ownerId', session.user.id)
 	if (!data) throw new Error(error.message)
-	redirect(303, `/events/${data[0].eventName}/form`)
+	redirect(303, `/events/${data[0].slug}/form`)
 	}
 } satisfies Actions;
 

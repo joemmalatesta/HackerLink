@@ -9,7 +9,6 @@
 		formElement.submit();
 	}
 
-	console.log();
 </script>
 
 <!-- Use color of event info in here -->
