@@ -7,7 +7,7 @@ export default defineConfig({
 	plugins: [
 		sentrySvelteKit({
 			sourceMapsUploadOptions: {
-				org: "HackerLink-l9",
+				org: "hackerlink-l9",
 				project: "hackerlink-fullstack",
 				authToken: env.SENTRY_AUTH_TOKEN,
 			},
