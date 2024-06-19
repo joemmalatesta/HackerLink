@@ -12,9 +12,10 @@ This is my repo for building out components. I'll merge it with my auth repo in 
 
 ### Dependencies 
 - [Drag and Drop Svelte package](https://www.npmjs.com/package/svelte-dnd-action)
+- Svelte Toast :D 
 
 ### Sentry
-- I'm realizing this is going to be a cool use case for Sentry. Since I'll be making new sites for each form like TypeForm does, it's going to (I think) be a weird implementation to get Sentry on each form.
+
 
 ### Todo
 - Verify auth on each page
