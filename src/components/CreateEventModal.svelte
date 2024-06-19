@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { enhance } from "$app/forms";
+
 	export let showModal: boolean;
 
 	let dialog: HTMLDialogElement;
@@ -9,34 +11,37 @@
 	let secondaryColor: string = "#ffdbe2";
 	let textColor: string = "#000";
 	let buttonType: any = "submit";
+
+	export let formError;
+	formError = ''
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 <dialog
-	class="rounded-2xl drop-shadow-lg ring-2 ring-gray-400/60 ring-offset-1 ring-inset"
+	class="rounded-2xl drop-shadow-lg "
 	bind:this={dialog}
 	on:close={() => (showModal = false)}
 	on:click|self={() => dialog.close()}
 >
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div class="p-10" on:click|stopPropagation>
-		<h1 class="text-4xl font-semibold mb-5 text-center">Create New Event</h1>
-		<form action="?/createNewEvent" method="POST" class="flex flex-col gap-2">
+		<h1 class="text-4xl font-semibold mb-5">Create New Event</h1>
+		<form action="?/createNewEvent" method="POST" class="flex flex-col gap-3" use:enhance>
 			<div class="flex flex-col items-start">
-				<p class="text-sm">Event name</p>
+				<p class={`text-sm ${formError == 'no eventName' ? "text-red-500" : ""}`}>Event name</p>
 				<input
 					type="text"
 					placeholder="Your event's name"
 					name="eventName"
-					class="py-1 border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600 w-full"
+					class={`${formError == 'no eventName' ? "border-red-500" : ""} focus:placeholder:opacity-0 placeholder:transition-all border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600 w-full`}
 				/>
 			</div>
 			<div class="flex flex-col items-start">
-				<p class="text-sm">Description</p>
+				<p class={`text-sm ${formError == 'no description' ? "text-red-500" : ""}`}>Description</p>
 				<textarea
 					placeholder="Tell us about your event"
 					name="description"
-					class="placeholder:bottom-0 resize-none p-1 rounded-bl-md border-l border-b border-gray-400/60 w-full focus:outline-none focus:border-gray-600 text-gray-600"
+					class={`${formError == 'no description' ? "border-red-500" : ""} focus:placeholder:opacity-0 placeholder:transition-all resize-y max-h-60 p-1 rounded-md border focus:ring-1 ring-gray-600 border-gray-400/60 w-full focus:outline-none focus:border-gray-600 text-gray-600`}
 				/>
 			</div>
 
@@ -57,10 +62,7 @@
 			</div>
 
 			<!-- Change button type programatically? to fix double submission  -->
-			<button
-				style={`background: linear-gradient( 90deg,${primaryColor},${secondaryColor}); color: ${textColor} `}
-				class={`p-1 bg-gradient-to-r rounded-md from-[${primaryColor}] to-[${secondaryColor}]`}>Create Event</button
-			>
+			<button class="bg-black text-white rounded-md p-1.5 drop-shadow-md w-full">Submit</button>
 		</form>
 		<!-- svelte-ignore a11y-autofocus -->
 	</div>

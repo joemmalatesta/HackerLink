@@ -7,6 +7,8 @@
 	export let data;
 	export let form;
 	$: if (form?.success) toast.success(form.success);
+	let formError = form?.error
+	$: formError = form?.error as string
 	// $: if (form?.error) toast.error(form.error)
 
 	let events: Event[];
@@ -34,7 +36,7 @@
 	</form>
 
 	{#if showModal}
-		<CreateEventModal bind:showModal />
+		<CreateEventModal bind:showModal formError={formError} />
 	{/if}
 </main>
 <Toaster position={"bottom-center"} />

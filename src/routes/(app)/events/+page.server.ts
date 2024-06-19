@@ -45,6 +45,12 @@ export const actions = {
 		const primaryColor = formData.get("primaryColor");
 		const secondaryColor = formData.get("secondaryColor");
 		const textColor = formData.get("textColor");
+		if (!eventName) return { error: "no eventName" };
+		// Deal with slug being possibly duplicated.
+		let slug = slugify(eventName)
+		let duplicateSlug: boolean = false
+
+
 		console.log(`adding new event ${eventName} to ${email} account`);
 		// Make new event
 		const { data, error } = await supabase
@@ -63,10 +69,27 @@ export const actions = {
 				},
 			])
 			.select();
-		if (error) {
-			return fail(500, {
-				error,
-			});
+		duplicateSlug = error && error.message.includes("duplicate key") || false
+		while (duplicateSlug) {
+			slug = `${slug}${Math.floor(Math.random() * 10)}`
+			console.log(slug)
+			const { data, error } = await supabase
+			.from("events")
+			.insert([
+				{
+					owner: email,
+					ownerId: userId,
+					primaryColor,
+					secondaryColor,
+					textColor,
+					description,
+					eventName,
+					draftFormQuestions: defaultFormData,
+					slug,
+				},
+			])
+			.select();
+			duplicateSlug = error && error.message.includes("duplicate key") || false
 		}
 		return {
 			success: "Successfully Created Event 🎉",
@@ -130,3 +153,6 @@ function slugify(str: string) {
 		.replace(/-+/g, "-"); // remove consecutive hyphens
 	return str;
 }
+
+
+

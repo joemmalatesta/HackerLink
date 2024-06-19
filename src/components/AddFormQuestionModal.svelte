@@ -105,7 +105,7 @@
 				{#if type == "checkBoxes" || type == "multipleChoice"}
 					<div class="flex flex-col">
 						<label for="title">Choices</label>
-						<div class="flex flex-col w-full max-h-32 overflow-scroll ml-3 text-base">
+						<div class="flex flex-col w-full h-32 overflow-y-scroll ml-3 text-base overflow-x-hidden">
 							<form
 								class="flex gap-1"
 								on:submit|preventDefault={() => {
@@ -123,7 +123,7 @@
 									class="w-1/3 border-b focus:border-neutral-800 focus:outline-none focus:placeholder:opacity-0 placeholder:transition-all"
 								/>
 								<button>
-									<img src="/chevronRight.svg" alt="Add Choice" class={`w-4 ${newChoice.length > 18 ? "" : "-translate-x-5"} transition-all`} />
+									<img src="/chevronRight.svg" alt="Add Choice" class={`w-4 ${newChoice.length > 14 ? "" : "-translate-x-5"} transition-all`} />
 								</button>
 							</form>
 							{#if options}
