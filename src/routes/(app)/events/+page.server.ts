@@ -70,7 +70,8 @@ export const actions = {
 			])
 			.select();
 		duplicateSlug = error && error.message.includes("duplicate key") || false
-		while (duplicateSlug) {
+		while (duplicateSlug) {	
+			// Append random number until slug is unique
 			slug = `${slug}${Math.floor(Math.random() * 10)}`
 			console.log(slug)
 			const { data, error } = await supabase
