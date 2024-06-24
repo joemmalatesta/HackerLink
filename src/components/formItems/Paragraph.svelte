@@ -5,4 +5,5 @@
 	export let currentAnswer: any = undefined;
 </script>
 
-<textarea required={question.required} id={question.title} class="resize-none w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" placeholder="Your answer here" rows="4"></textarea>
+<!-- svelte-ignore a11y-autofocus -->
+<textarea required={question.required} id={question.title} autofocus class="focus:border-neutral-800 resize-none w-full px-3 py-2 text-gray-700 border-2 rounded-lg focus:outline-none" placeholder="Your answer here" rows="4"></textarea>

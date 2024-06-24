@@ -4,6 +4,5 @@
     export let question: Question;
 </script>
 
-<div class="w-full">
-<input class="w-20 h-10" type="date"></div>
 
+<input class="py-2" type="date">

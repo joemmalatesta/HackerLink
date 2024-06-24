@@ -9,6 +9,7 @@
 	import { browser } from "$app/environment";
 	import { fly, slide } from "svelte/transition";
 	import Paragraph from "../../../components/formItems/Paragraph.svelte";
+	import DatePicker from "../../../components/formItems/DatePicker.svelte";
 	export let data;
 
 	let questions: Question[];
@@ -18,25 +19,56 @@
 	$: if (browser) {
 		localStorage.setItem("questions", JSON.stringify(questions));
 		localStorage.setItem("answers", JSON.stringify(answers));
+		document.addEventListener("keydown", handleNext);
+	}
+
+	let nextButton: HTMLButtonElement;
+	function handleNext(event: KeyboardEvent) {
+		if (event.key === "Enter") {
+			if (activeQuestion.required == true && currentAnswer == undefined) {
+				requiredError = true;
+				return;
+			}
+			event.preventDefault();
+			if (nextButton) {
+				nextButton.click();
+			}
+		}
 	}
 
 	// Get questions from data
 	// Get user Id from data
 	let activeQuestion: Question;
 	let currentQuestionId: number = 0;
-	let currentAnswer: any;
+	let currentAnswer: any = undefined;
+	let previousQuestion: Question;
 	$: activeQuestion = questions[currentQuestionId];
+	$: previousQuestion = questions[currentQuestionId - 1];
 
 	function handleSubmit() {
 		console.log("submitted!");
 		// Call to server to verify all is answered and submit answers
 	}
+
+	let requiredError: boolean = false;
 </script>
 
 <div class="absolute left-1/2 -translate-x-1/2 bottom-1/2 w-[40rem]">
 	{#key activeQuestion}
 		<div class="gap-3 flex flex-col justify-start items-start" transition:slide={{ duration: 300 }}>
-			<h1 class="text-3xl">{activeQuestion.title}</h1>
+			<div class="flex flex-col items-start">
+				{#if previousQuestion}
+					<button class="flex text-sm gap-2 items-center" on:click={() => (currentQuestionId -= 1)}>
+						<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<img src="/chevronRight.svg" class="cursor-pointer scale-x-[-1] w-4 h-4" alt="" />
+						<p>Question {previousQuestion.id}</p>
+						<!-- <p>{previousQuestion.title}</p> -->
+					</button>
+				{/if}
+
+				<h1 class="text-3xl">{activeQuestion.title}</h1>
+			</div>
 			{#if activeQuestion.type == "shortAnswer"}
 				<ShortAnswer question={activeQuestion} bind:currentAnswer />
 			{:else if activeQuestion.type == "paragraph"}
@@ -45,8 +77,8 @@
 				<MultipleChoice question={activeQuestion} bind:currentAnswer />
 			{:else if activeQuestion.type == "trueFalse"}
 				<TrueFalse question={activeQuestion} bind:currentAnswer />
-				<!-- {:else if activeQuestion.type == "date"} -->
-				<!-- <Date question={activeQuestion} bind:currentAnswer /> -->
+			{:else if activeQuestion.type == "date"}
+				<DatePicker question={activeQuestion} />
 			{:else if activeQuestion.type == "fileUpload"}
 				<FileUpload question={activeQuestion} bind:currentAnswer />
 			{:else if activeQuestion.type == "checkBoxes"}
@@ -54,23 +86,24 @@
 			{/if}
 
 			<div class="flex w-full gap-4">
-				{#if currentQuestionId >= 1}
-					<button
-						on:click={() => {
-							currentQuestionId -= 1;
-						}}>Previous</button
-					>
-				{/if}
 				{#if currentQuestionId == questions.length - 1}
 					<button on:click={handleSubmit}>Submit</button>
 				{:else}
 					<button
+						bind:this={nextButton}
 						on:click={() => {
-							currentQuestionId += 1;
+							if (activeQuestion.required == true && currentAnswer == undefined) {
+								requiredError = true;
+							} else {
+								currentQuestionId += 1;
+							}
 						}}>Next</button
 					>
 				{/if}
 			</div>
+			{#if requiredError}
+				<p class="text-sm text-red-400">This question is required</p>
+			{/if}
 		</div>
 	{/key}
 </div>

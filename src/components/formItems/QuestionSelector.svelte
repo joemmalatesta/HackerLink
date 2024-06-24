@@ -19,7 +19,7 @@
 	<MultipleChoice {question} />
 {:else if question.type == "trueFalse"}
 	<TrueFalse {question} />
-	<!-- {:else if question.type == "date"} -->
+{:else if question.type == "date"}
 	<DatePicker question={question} />
 {:else if question.type == "fileUpload"}
 	<FileUpload {question} />

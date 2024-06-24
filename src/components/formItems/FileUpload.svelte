@@ -8,7 +8,7 @@
 	let fileName: string = ''
 </script>
 
-<div class="w-full h-40 rounded-2xl relative bg-gray-300/60 flex justify-center items-center ">
+<div class="w-full h-40 rounded-2xl relative bg-gray-300/60 flex justify-center items-center shadow-lg hover:bg-gray-300">
 	<div class="flex flex-col gap-3 items-center justify-center opacity-60" >
 	<p class="font-semibold">Upload or drag file</p>
 	<img class="w-20" src="/icons/plus.svg" alt="">
