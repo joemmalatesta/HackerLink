@@ -43,9 +43,9 @@
 
 	function handleSubmit() {
 		console.log("submitted!");
-		// Loop through all answers and questions and make sure their lengths match, and that each required question was answered 
-
-		// Call to server to verify all is answered and submit answers - make route in /api folder 
+		// Loop through all answers and questions and make sure their lengths match, and that each required question was answered
+		// ^^^^ DO THAT SHIT ON THE SERVER. query to make sure questions array wasn't tampered with :D
+		// Call to server to verify all is answered and submit answers - make route in /api folder
 	}
 
 	let requiredError: boolean = false;
@@ -55,7 +55,16 @@
 		answer: any;
 	}
 	let allAnswers: Answers[] = [];
-	$: console.log(allAnswers);
+	// Initialize the answers array when questions data is available
+	$: if (questions && questions.length) {
+		allAnswers = questions.map((question) => ({
+			id: question.id,
+			title: question.title,
+			answer: undefined,
+		}));
+	}
+
+	$: console.log(currentAnswer);
 </script>
 
 <div class="absolute left-1/2 -translate-x-1/2 bottom-1/2 w-[40rem]">
@@ -63,7 +72,13 @@
 		<div class="gap-3 flex flex-col justify-start items-start" transition:slide={{ duration: 300 }}>
 			<div class="flex flex-col items-start">
 				{#if previousQuestion}
-					<button class="flex text-sm gap-2 items-center" on:click={() => (currentQuestionId -= 1)}>
+					<button
+						class="flex text-sm gap-2 items-center"
+						on:click={() => {
+							currentQuestionId -= 1;
+							currentAnswer = allAnswers[currentQuestionId].answer;
+						}}
+					>
 						<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
 						<img src="/chevronRight.svg" class="cursor-pointer scale-x-[-1] w-4 h-4" alt="" />
@@ -101,11 +116,12 @@
 								requiredError = true;
 							} else {
 								// at what point do I make this function not inline
-								requiredError = false
-								allAnswers.push({id: currentQuestionId, title: activeQuestion.title, answer: currentAnswer});
+								requiredError = false;
+								allAnswers[currentQuestionId].answer = currentAnswer;
 								allAnswers = [...allAnswers];
 								currentAnswer = undefined;
 								currentQuestionId += 1;
+								currentAnswer = allAnswers[currentQuestionId].answer;
 							}
 						}}>Next</button
 					>
