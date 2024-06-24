@@ -65,10 +65,9 @@
 			// Show the submission screen :D
 			console.log("submitted data!");
 		}
-
-		// Loop through all answers and questions and make sure their lengths match, and that each required question was answered
-		// ^^^^ DO THAT SHIT ON THE SERVER. query to make sure questions array wasn't tampered with :D
-		// Call to server to verify all is answered and submit answers - make route in /api folder
+		else{
+			// Make toast error
+		}
 	}
 
 	let requiredError: boolean = false;
