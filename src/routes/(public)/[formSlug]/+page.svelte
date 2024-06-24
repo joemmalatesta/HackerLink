@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Question } from "$lib/types";
+	import type { Answer, Question } from "$lib/types";
 	import type { QuestionType } from "$lib/types";
 	import Checkboxes from "../../../components/formItems/Checkboxes.svelte";
 	import FileUpload from "../../../components/formItems/FileUpload.svelte";
@@ -10,6 +10,8 @@
 	import { fly, slide } from "svelte/transition";
 	import Paragraph from "../../../components/formItems/Paragraph.svelte";
 	import DatePicker from "../../../components/formItems/DatePicker.svelte";
+	import { page } from "$app/stores";
+	let slug = $page.params["formSlug"];
 	export let data;
 
 	let questions: Question[];
@@ -41,20 +43,36 @@
 	$: activeQuestion = questions[currentQuestionId];
 	$: previousQuestion = questions[currentQuestionId - 1];
 
-	function handleSubmit() {
-		console.log("submitted!");
+	async function handleSubmit() {
+		// not very DRY of me... (see handleNext)
+		if (activeQuestion.required == true && currentAnswer == undefined) {
+			requiredError = true;
+		} else {
+			requiredError = false;
+			// Add answer to array
+			allAnswers[currentQuestionId].answer = currentAnswer;
+			allAnswers = [...allAnswers];
+		}
+		let response = await fetch("/api/SubmitAnswers", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ slug, answers: JSON.stringify(allAnswers) }),
+		});
+		let responseData = await response.json();
+		if (responseData.success) {
+			// Show the submission screen :D
+			console.log("submitted data!");
+		}
+
 		// Loop through all answers and questions and make sure their lengths match, and that each required question was answered
 		// ^^^^ DO THAT SHIT ON THE SERVER. query to make sure questions array wasn't tampered with :D
 		// Call to server to verify all is answered and submit answers - make route in /api folder
 	}
 
 	let requiredError: boolean = false;
-	interface Answers {
-		id: number;
-		title: string;
-		answer: any;
-	}
-	let allAnswers: Answers[] = [];
+	let allAnswers: Answer[] = [];
 	// Initialize the answers array when questions data is available
 	$: if (questions && questions.length) {
 		allAnswers = questions.map((question) => ({
@@ -64,7 +82,22 @@
 		}));
 	}
 
-	$: console.log(currentAnswer);
+	function nextQuestion() {
+		if (activeQuestion.required == true && currentAnswer == undefined) {
+			requiredError = true;
+		} else {
+			requiredError = false;
+			// Add answer to array
+			allAnswers[currentQuestionId].answer = currentAnswer;
+			allAnswers = [...allAnswers];
+			// Reset answer
+			currentAnswer = undefined;
+			currentQuestionId += 1;
+
+			//maybe superfluous
+			currentAnswer = allAnswers[currentQuestionId].answer;
+		}
+	}
 </script>
 
 <div class="absolute left-1/2 -translate-x-1/2 bottom-1/2 w-[40rem]">
@@ -72,15 +105,15 @@
 		<div class="gap-3 flex flex-col justify-start items-start" transition:slide={{ duration: 300 }}>
 			<div class="flex flex-col items-start">
 				{#if previousQuestion}
+					<!-- BACK BUTTON (maybe move to bottom) -->
 					<button
 						class="flex text-sm gap-2 items-center"
 						on:click={() => {
 							currentQuestionId -= 1;
+							// Set current answer to what was previously answered
 							currentAnswer = allAnswers[currentQuestionId].answer;
 						}}
 					>
-						<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
 						<img src="/chevronRight.svg" class="cursor-pointer scale-x-[-1] w-4 h-4" alt="" />
 						<p>Question {previousQuestion.id}</p>
 						<!-- <p>{previousQuestion.title}</p> -->
@@ -111,19 +144,7 @@
 				{:else}
 					<button
 						bind:this={nextButton}
-						on:click={() => {
-							if (activeQuestion.required == true && currentAnswer == undefined) {
-								requiredError = true;
-							} else {
-								// at what point do I make this function not inline
-								requiredError = false;
-								allAnswers[currentQuestionId].answer = currentAnswer;
-								allAnswers = [...allAnswers];
-								currentAnswer = undefined;
-								currentQuestionId += 1;
-								currentAnswer = allAnswers[currentQuestionId].answer;
-							}
-						}}>Next</button
+						on:click={nextQuestion}>Next</button
 					>
 				{/if}
 			</div>

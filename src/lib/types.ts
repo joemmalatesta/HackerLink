@@ -43,3 +43,10 @@ export interface EventSettings {
 	secondaryColor: string;
 	textColor: string;
 }
+
+
+export interface Answer {
+	id: number;
+	title: string;
+	answer: any;
+}
