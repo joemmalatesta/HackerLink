@@ -57,7 +57,7 @@
 	<div class="p-10">
 		{#if type}
 			<div class="flex text-sm gap-2 items-center">
-				<img on:click={() => (type = undefined)} src="/chevronRight.svg" class="cursor-pointer scale-x-[-1] w-4 h-4" alt="" />
+				<img on:click={() => {type = undefined; title=''}} src="/chevronRight.svg" class="cursor-pointer scale-x-[-1] w-4 h-4" alt="" />
 				<p>{type}</p>
 			</div>
 		{/if}
