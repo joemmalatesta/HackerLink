@@ -43,7 +43,6 @@
 		});
 	}
 
-	$: console.log(required)
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->

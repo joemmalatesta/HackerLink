@@ -25,10 +25,6 @@
 	let nextButton: HTMLButtonElement;
 	function handleNext(event: KeyboardEvent) {
 		if (event.key === "Enter") {
-			if (activeQuestion.required == true && currentAnswer == undefined) {
-				requiredError = true;
-				return;
-			}
 			event.preventDefault();
 			if (nextButton) {
 				nextButton.click();
@@ -47,10 +43,19 @@
 
 	function handleSubmit() {
 		console.log("submitted!");
-		// Call to server to verify all is answered and submit answers
+		// Loop through all answers and questions and make sure their lengths match, and that each required question was answered 
+
+		// Call to server to verify all is answered and submit answers - make route in /api folder 
 	}
 
 	let requiredError: boolean = false;
+	interface Answers {
+		id: number;
+		title: string;
+		answer: any;
+	}
+	let allAnswers: Answers[] = [];
+	$: console.log(allAnswers);
 </script>
 
 <div class="absolute left-1/2 -translate-x-1/2 bottom-1/2 w-[40rem]">
@@ -67,7 +72,7 @@
 					</button>
 				{/if}
 
-				<h1 class="text-3xl">{activeQuestion.title}</h1>
+				<h1 class="text-3xl">{activeQuestion.title}{activeQuestion.required ? "*" : ""}</h1>
 			</div>
 			{#if activeQuestion.type == "shortAnswer"}
 				<ShortAnswer question={activeQuestion} bind:currentAnswer />
@@ -78,7 +83,7 @@
 			{:else if activeQuestion.type == "trueFalse"}
 				<TrueFalse question={activeQuestion} bind:currentAnswer />
 			{:else if activeQuestion.type == "date"}
-				<DatePicker question={activeQuestion} />
+				<DatePicker question={activeQuestion} bind:currentAnswer />
 			{:else if activeQuestion.type == "fileUpload"}
 				<FileUpload question={activeQuestion} bind:currentAnswer />
 			{:else if activeQuestion.type == "checkBoxes"}
@@ -95,6 +100,11 @@
 							if (activeQuestion.required == true && currentAnswer == undefined) {
 								requiredError = true;
 							} else {
+								// at what point do I make this function not inline
+								requiredError = false
+								allAnswers.push({id: currentQuestionId, title: activeQuestion.title, answer: currentAnswer});
+								allAnswers = [...allAnswers];
+								currentAnswer = undefined;
 								currentQuestionId += 1;
 							}
 						}}>Next</button
