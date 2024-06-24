@@ -13,6 +13,7 @@ export const POST = async ({
 	const body = await request.json();
 	const eventId = body.eventId;
 	const updatedQuestions = JSON.parse(body.updatedQuestions);
+	console.log(updatedQuestions)
 	const session: Session = await getSession();
 	if (!session) redirect(307, "/auth");
 	const { data, error } = await supabase

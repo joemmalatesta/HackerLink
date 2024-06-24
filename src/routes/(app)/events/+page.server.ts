@@ -130,17 +130,20 @@ let defaultFormData: Question[] = [
 	{
 		id: 1,
 		type: "shortAnswer",
+		required: true,
 		title: "Where's the last place you traveled?",
 	},
 	{
 		id: 2,
 		type: "paragraph",
+		required: true,
 		title: "Why did you travel there?",
 	},
 	{
 		id: 3,
 		type: "multipleChoice",
 		title: "How was the weather?",
+		required: true,
 		options: ["Sunny", "Rainy", "Snowy", "Overcast"],
 	},
 ];

@@ -7,7 +7,7 @@
 	let options: string[] = [];
 	// For adding choices to the options
 	let newChoice: string = "";
-	let newChoiceInput: HTMLInputElement
+	let newChoiceInput: HTMLInputElement;
 	let title: string;
 	let type: QuestionType | undefined;
 	let required: boolean;
@@ -20,20 +20,21 @@
 	$: if (dialog && showNewQuestionModal) dialog.showModal();
 
 	// Flow of the component realistically should be Question type -> Title/Question -> Options if needed
-	let titleError: boolean = false
+	let titleError: boolean = false;
 	function submitNewQuestion() {
-		titleError = false
+		titleError = false;
 		if (!title) {
-			titleError = true
-			return
+			titleError = true;
+			return;
 		}
 		if (!type) {
-			console.log('What are you doing??')
-			return
+			console.log("What are you doing??");
+			return;
 		}
 		let newQuestion: Question = {
 			type,
 			title,
+			required,
 			options,
 			id: 0,
 		};
@@ -42,6 +43,7 @@
 		});
 	}
 
+	$: console.log(required)
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
@@ -54,12 +56,12 @@
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div class="p-10">
 		{#if type}
-		<div class="flex text-sm gap-2 items-center">
-			<img on:click={() => type = undefined} src="/chevronRight.svg" class="cursor-pointer scale-x-[-1] w-4 h-4" alt="">
-			<p>{type}</p>
-		</div>	
+			<div class="flex text-sm gap-2 items-center">
+				<img on:click={() => (type = undefined)} src="/chevronRight.svg" class="cursor-pointer scale-x-[-1] w-4 h-4" alt="" />
+				<p>{type}</p>
+			</div>
 		{/if}
-		
+
 		<div class={`w-full flex justify-between items-center mb-5`}>
 			<h1 class="text-3xl font-bold">New Question</h1>
 			<img class="w-8 cursor-pointer" on:click={() => (showNewQuestionModal = false)} src="/x.svg" alt="Close" />
@@ -86,9 +88,8 @@
 		<!-- STEP 2. QUESTION NAME AND REQUIRED OR NOT (should maybe be step 1) -->
 		{#if type}
 			<div class="flex flex-col gap-5">
-				
 				<div class="flex flex-col">
-					<label for="title" class={`${titleError ? 'text-red-500': 'text-black'}`}>Question Title</label>
+					<label for="title" class={`${titleError ? "text-red-500" : "text-black"}`}>Question Title</label>
 					<input
 						class="w-full focus:border-neutral-800 border-b focus:outline-none focus:placeholder:opacity-0 placeholder:transition-all"
 						id="title"
@@ -99,7 +100,7 @@
 					/>
 				</div>
 				<div class="flex items-center gap-3">
-					<input type="checkbox" id="required" name="required" bind:value={required} class=" accent-black w-4 h-4 rounded focus:ring-black" />
+					<input type="checkbox" id="required" name="true" bind:checked={required} class=" accent-black w-4 h-4 rounded focus:ring-black" />
 					<label for="required">This is a required question</label>
 				</div>
 				{#if type == "checkBoxes" || type == "multipleChoice"}
@@ -109,10 +110,9 @@
 							<form
 								class="flex gap-1"
 								on:submit|preventDefault={() => {
-									
 									options = [newChoice, ...options];
 									newChoice = "";
-									newChoiceInput.focus()
+									newChoiceInput.focus();
 								}}
 							>
 								<input
