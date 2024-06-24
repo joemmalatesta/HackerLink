@@ -2,31 +2,19 @@
 	import type { Question } from "$lib/types";
 
 	export let question: Question;
-	export let currentAnswer;
+	export let currentAnswer: any = undefined;
+	export let editView: boolean = false
+	let fileUploaded: boolean = false
+	let fileName: string = ''
 </script>
 
-<form>
-	<div class="space-y-2">
-		<div class="flex items-center">
-			<input
-				type="checkbox"
-				id="option1"
-				name="options[]"
-				value="Option1"
-				class="checked:bg-blue-600 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-			/>
-			<label for="option1" class="ml-2 text-sm text-gray-900">{question.title}</label>
-		</div>
-		<div class="flex items-center">
-			<input
-				type="checkbox"
-				id="option2"
-				name="options[]"
-				value="Option2"
-				class="checked:bg-blue-600 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-			/>
-			<label for="option2" class="ml-2 text-sm text-gray-900">Option 2</label>
-		</div>
-		<!-- Repeat the block above for more options -->
-	</div>
-</form>
+<div class="w-full h-40 rounded-2xl relative bg-gray-300/60 flex justify-center items-center ">
+	<div class="flex flex-col gap-3 items-center justify-center opacity-60" >
+	<p class="font-semibold">Upload or drag file</p>
+	<img class="w-20" src="/icons/plus.svg" alt="">
+</div>
+<input bind:value={fileName} type="file" class="hover:cursor-pointer opacity-0 w-full absolute inset-0 rounded-2xl" required={question.required}>
+</div>
+<div class="w-full whitespace-nowrap overflow-hidden overflow-ellipsis">
+{fileName.split('\\').pop()}
+</div>

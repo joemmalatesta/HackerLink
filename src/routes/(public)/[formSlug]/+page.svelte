@@ -33,7 +33,7 @@
 	}
 </script>
 
-<div class="absolute left-1/2 -translate-x-1/2 bottom-1/2">
+<div class="absolute left-1/2 -translate-x-1/2 bottom-1/2 w-[40rem]">
 	{#key activeQuestion}
 		<div class="gap-3 flex flex-col justify-start items-start" transition:slide={{ duration: 300 }}>
 			<h1 class="text-3xl">{activeQuestion.title}</h1>

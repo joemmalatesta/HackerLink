@@ -2,17 +2,50 @@
 	import type { Question } from "$lib/types";
 
 	export let question: Question;
-	export let currentAnswer;
+	export let currentAnswer: any = undefined;
 	let options: string[] = question.options as string[];
 </script>
 
-{#each options as option}
-	<input
-		type="checkbox"
-		id={option}
-		name={option}
-		value={option}
-		class="checked:bg-red-600 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-	/>
-	<label for={option}></label>
-{/each}
+
+
+<div class="relative flex flex-col text-gray-700 bg-white rounded-xl bg-clip-border w-full">
+	<nav class="flex flex-col gap-1 py-2 w-full">
+		{#each options as option}
+			<div
+				role="button"
+				class="flex items-center w-full p-0 leading-tight transition-all hover:bg-gray-300/40 rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
+			>
+				<label for={option} class="flex items-center w-full px-3 py-1 cursor-pointer">
+					<div class="grid mr-3 place-items-center">
+						<div class="inline-flex items-center">
+							<label class="relative flex items-center p-0 rounded-full cursor-pointer" for={option}>
+								<input
+									name={question.title}
+									id={option}
+									type="checkbox"
+									value={option}
+									required={question.required}
+									class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-gray-500/80 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10"
+									/>
+									<span
+									class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100"
+								>
+									<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1">
+										<path
+											fill-rule="evenodd"
+											d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+											clip-rule="evenodd"
+										></path>
+									</svg>
+								</span>
+							</label>
+						</div>
+					</div>
+					<p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-400">
+						{option}
+					</p>
+				</label>
+			</div>
+		{/each}
+	</nav>
+</div>

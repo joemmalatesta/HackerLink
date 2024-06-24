@@ -27,6 +27,7 @@ export interface Question {
 	id: number;
 	title: string;
 	type: QuestionType;
+	required?: boolean;
 	options?: string[];
 	// extras (checkboxes, etc, all dependant on question type)
 }

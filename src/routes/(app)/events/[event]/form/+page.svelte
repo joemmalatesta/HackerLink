@@ -6,6 +6,13 @@
 
 	import { dndzone, type DndEvent } from "svelte-dnd-action";
 	import { enhance } from "$app/forms";
+	import ShortAnswer from "../../../../../components/formItems/ShortAnswer.svelte";
+	import Paragraph from "../../../../../components/formItems/Paragraph.svelte";
+	import MultipleChoice from "../../../../../components/formItems/MultipleChoice.svelte";
+	import TrueFalse from "../../../../../components/formItems/TrueFalse.svelte";
+	import FileUpload from "../../../../../components/formItems/FileUpload.svelte";
+	import Checkboxes from "../../../../../components/formItems/Checkboxes.svelte";
+	import QuestionSelector from "../../../../../components/formItems/QuestionSelector.svelte";
 	export let data;
 	export let form;
 	$: if (form?.success) toast.success(form?.success);
@@ -70,6 +77,7 @@
 		return await response.json();
 	}
 
+	let hoverPublish: boolean;
 	let hoveredQuestion: number;
 </script>
 
@@ -80,7 +88,27 @@
 		<form class="absolute left-60" use:enhance action="?/publish" method="POST">
 			<input type="text" name="eventId" bind:value={eventId} class="hidden" />
 			<input name="questions" value={JSON.stringify(questions)} class="hidden" />
-			<button class="flex gap-1 font-medium items-center text-lg bg-indigo-200 p-2 rounded-md hover:bg-indigo-300">Publish form <img src="/send.svg" alt="send"></button>
+			<!-- svelte-ignore a11y-mouse-events-have-key-events -->
+			<button
+				class="flex gap-1 font-medium items-center text-lg bg-white p-2 rounded-md border-black border-2 hover:bg-black hover:text-white"
+				on:mouseover={() => (hoverPublish = true)}
+				on:mouseleave={() => (hoverPublish = false)}
+				>Publish form <svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke={hoverPublish ? "#fff" : "#000"}
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="icon icon-tabler icons-tabler-outline icon-tabler-send-2"
+					><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path
+						d="M4.698 4.034l16.302 7.966l-16.302 7.966a.503 .503 0 0 1 -.546 -.124a.555 .555 0 0 1 -.12 -.568l2.468 -7.274l-2.468 -7.274a.555 .555 0 0 1 .12 -.568a.503 .503 0 0 1 .546 -.124z"
+					/><path d="M6.5 12h14.5" /></svg
+				></button
+			>
 		</form>
 		<!-- LEFT SIDE BAR (could be it's own component tbh.) -->
 		<div class="flex flex-col">
@@ -104,7 +132,7 @@
 							<img src={`/icons/${question.type}.svg`} height="12" width="20" alt={question.type} />
 						</div>
 						<!-- Figure out how to get ... if it's too long -->
-						<p class="h-12 w-3/4 overflow-ellipsis overflow-hidden flex items-start justify-st">{question.title}</p>
+						<p class="h-12 w-3/4 overflow-ellipsis overflow-hidden flex items-start justify-start">{question.title}</p>
 						<!-- <button on:click={() => {deleteQuestion(index)}} class={` ${index == hoveredQuestion ? "opacity-100 translate-x-4" : "opacity-0"} transition-all translate-y-3`}>
 						<img src="/trash.svg" alt="">
 					  </button> -->
@@ -119,8 +147,11 @@
 			>
 		</div>
 		<!-- Main section showing current question. -->
-		<section class="w-full flex justify-center items-center">
-			{questions[selectedQuestion].title}
+		<section class="flex justify-center items-center w-full">
+			<div class="w-[30rem] flex flex-col items-start justify-start">
+				<p class="text-2xl">{questions[selectedQuestion].title}</p>
+				<QuestionSelector question={questions[selectedQuestion]} />
+			</div>
 		</section>
 	</div>
 	{#if showNewQuestionModal}
