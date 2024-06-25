@@ -50,3 +50,10 @@ export interface Answer {
 	title: string;
 	answer: any;
 }
+
+export interface Response {
+	createdAt: Date,
+	formId: string,
+	response: Answer[],
+	id: number
+}   
