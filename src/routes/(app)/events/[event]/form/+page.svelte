@@ -15,8 +15,6 @@
 	import QuestionSelector from "../../../../../components/formItems/QuestionSelector.svelte";
 	export let data;
 	export let form;
-	$: if (form?.success) toast.success(form?.success);
-	$: if (form?.error) toast.error(form?.error);
 
 	let questions: Question[];
 	let selectedQuestion = 1;
@@ -80,31 +78,35 @@
 	let hoverPublish: boolean;
 	let hoveredQuestion: number;
 
-
-	$: console.log(questions)
+	$: console.log(questions);
 </script>
 
 <!-- ADD SKELETONS IF NOT BROTHER -->
 {#if questions}
 	<div class="flex flex-grow min-h-full">
 		<!-- PUBLISH FORM -->
-		<form class="absolute left-60" use:enhance={({formData, cancel}) => {
-			// cool, use enhance runs before submission and we can check if we are about to submit a blank
-			const questions = formData.get('questions')
-			// If we are, just cancel the submission... simple :D 
-			if (!questions) {
-				toast.error("No changes to publish")
-				cancel()
-			}
-
-		}} action="?/publish" method="POST">
+		<form
+			class="absolute left-60"
+			use:enhance={({}) => {
+				return async ({ result }) => {
+					if (result.type == "success") {
+						if (result.data?.success) toast.success(String(result.data.success));
+						else if (result.data?.error) toast.error(String(result.data.error));
+					}
+				};
+			}}
+			action="?/publish"
+			method="POST"
+		>
 			<input name="questions" value={JSON.stringify(questions)} class="hidden" />
 			<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 			<button
 				class="flex gap-1 font-medium items-center text-lg bg-white p-2 rounded-md border-black border-2 hover:bg-black hover:text-white"
 				on:mouseover={() => (hoverPublish = true)}
 				on:mouseleave={() => (hoverPublish = false)}
-				on:click={() => {if (!questions) console.log('no questions')}}
+				on:click={() => {
+					if (!questions) console.log("no questions");
+				}}
 				>Publish form <svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="24"

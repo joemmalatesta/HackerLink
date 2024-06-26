@@ -27,6 +27,7 @@ export const load: ServerLoad = async ({ locals: { getSession, supabase }, cooki
 
 export const actions = {
 	publish: async ({ cookies, request, locals: { supabase } }) => {
+		console.log('XX')
 		const eventId = cookies.get("eventId");
 		if (!eventId) throw new Error("no event in cookies??");
 		let formData = await request.formData();
