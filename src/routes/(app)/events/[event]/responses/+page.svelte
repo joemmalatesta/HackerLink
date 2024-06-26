@@ -2,17 +2,21 @@
 	import type { Answer, Response } from "$lib/types.js";
 	export let data;
 	let allResponses: Response[] = [];
-	$: allResponses = data.responses;
     let selectedResponses: Response[] = []
-    $: selectedResponses = allResponses.filter(response => response.formId === selectedFormId);
-
+    let allFormIds: string[];
+    let selectedFormId: string;
+	$: if (data) {
+        allResponses = data.responses;
+        allFormIds = data.allFormIds;
+        selectedFormId = allFormIds[selectedVersion]
+        selectedResponses = allResponses.filter(response => response.formId == selectedFormId);
+    }
+    
 
 	// Versioning forms (select subset of responses)
-	let allFormIds: string[];
-	$: allFormIds = data.allFormIds;
-	let selectedFormId: string;
-	$: if (allFormIds) selectedFormId = allFormIds[0];
 	let toggleDropdown: boolean = false;
+    let selectedVersion: number = 0
+    $: console.log(selectedVersion)
 </script>
 
 {#if allResponses}
@@ -26,7 +30,7 @@
             {#if toggleDropdown}
                 <div class="flex flex-col justify-center items-start w-16">
                     {#each allFormIds as formId, index}
-                        <button class="w-full outline" on:click={() =>{ (selectedFormId = allFormIds[index]); toggleDropdown = false}}>v{index}</button>
+                        <button class="w-full outline" on:click={() =>{ (selectedVersion = index); toggleDropdown = false}}>v{index}</button>
                     {/each}
                 </div>
             {/if}

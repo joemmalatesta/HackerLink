@@ -17,7 +17,6 @@ export const load: ServerLoad = async ({ locals: { getSession, supabase }, cooki
 	const pastFormIds: string[] = data[0].pastFormIds ?? [];
 	const allFormIds = [formId, ...pastFormIds];
 	const responses = await getResponses(supabase, allFormIds);
-	console.log(allFormIds)
 	return {
 		responses, allFormIds
 	};

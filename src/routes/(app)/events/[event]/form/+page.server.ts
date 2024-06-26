@@ -49,18 +49,24 @@ export const actions = {
 
 		// Before changing question data, check first if there are any responses tied to the current ID.
 		const { data: responses, error: responsesError } = await supabase
-		.from('responses').select("*").eq("formId", getQuestions[0].currentFormId)
+		.from('responses').select("*").eq("formId", currentFormId)
 		if (responsesError) throw new Error(responsesError.message)
 		// If there is data in responses, add current ID to old Ids, otherwise just overwrite it.
+		console.log(responses)
+		console.log(responses.length)
 		if (responses.length > 0){
+			console.log('responses found for form ' + getQuestions[0].currentFormId)
 			await appendOldFormId(userId!, eventId, supabase)
+		}
+		else{
+			console.log('no responses found...')
 		}
 
 		
 		// With old form ID added to the history, feel free to overwrite the questions and the formId
 		const { data: insertData, error: insertError } = await supabase
 				   .from("events")
-				   .update([{formQuestions: questions, currentFormId: crypto.randomUUID}])
+				   .update([{formQuestions: questions, currentFormId: crypto.randomUUID()}])
 					// Get by event ID
 					.eq('id', eventId)
 				   .eq("ownerId", userId)
@@ -90,6 +96,7 @@ function arraysEqual(arr1: Question[], arr2: Question[]) {
 
 
 async function appendOldFormId(userId: string, eventId: string, supabase: SupabaseClient) {
+	console.log('appending to old form')
 	const { data, error } = await supabase
 				   .from("events")
 				   .select('pastFormIds, currentFormId')
@@ -97,7 +104,8 @@ async function appendOldFormId(userId: string, eventId: string, supabase: Supaba
 					.eq('id', eventId)
 				   .eq("ownerId", userId)
 	if (error) throw new Error(error.message)
-	let newIdArray = data[0].pastFormIds.push(data[0].currentFormId)
+	let pastForms = data[0].pastFormIds ?? []
+	let newIdArray = [...pastForms, data[0].currentFormId]
 	console.log(newIdArray)
 	const { data: updateData, error: updateError } = await supabase
 				   .from("events")
