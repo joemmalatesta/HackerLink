@@ -5,18 +5,22 @@
     let selectedResponses: Response[] = []
     let allFormIds: string[];
     let selectedFormId: string;
+    let noResponses: boolean = false
 	$: if (data) {
+        noResponses = false
         allResponses = data.responses;
         allFormIds = data.allFormIds;
         selectedFormId = allFormIds[selectedVersion]
         selectedResponses = allResponses.filter(response => response.formId == selectedFormId);
+        // If no responses (should only happen for new forms), just say none found
+        console.log(selectedResponses.length)
+        if (!selectedResponses.length > 0) noResponses = true
     }
     
 
 	// Versioning forms (select subset of responses)
 	let toggleDropdown: boolean = false;
     let selectedVersion: number = 0
-    $: console.log(selectedVersion)
 </script>
 
 {#if allResponses}
@@ -36,6 +40,7 @@
             {/if}
         </div>
     </div>
+        {#if !noResponses}
         <table class="table-auto w-3/4 overflow-scroll">
             <!-- COLUMNS -->
              <tr>
@@ -53,6 +58,9 @@
                 </tr>
             {/each}
         </table>
+        {:else}
+        <h3>No responses for this form yet..</h3>
+        {/if}
 		
 	</div>
 {/if}
