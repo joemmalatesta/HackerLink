@@ -50,3 +50,4 @@ async function submitResponse(supabase: SupabaseClient, formId: string, answers:
 	})
 	if (error) throw new Error(error.message)
 }
+

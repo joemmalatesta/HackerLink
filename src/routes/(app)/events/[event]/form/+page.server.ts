@@ -10,7 +10,7 @@ export const load: ServerLoad = async ({ locals: { getSession, supabase }, cooki
 	const eventId = cookies.get("eventId");
 	const { data, error } = await supabase
 		.from("events")
-		.select("draftFormQuestions, eventName")
+		.select("draftFormQuestions, eventName, redirectUrl")
 		// Get by event ID
 		.eq("id", eventId)
 		.eq("ownerId", session.user.id);
@@ -22,12 +22,13 @@ export const load: ServerLoad = async ({ locals: { getSession, supabase }, cooki
 		questions,
 		eventId,
 		eventName,
+		// Should be doing it like this one, not setting var for each...
+		redirectUrl: data[0].redirectUrl as string | null, 
 	};
 };
 
 export const actions = {
 	publish: async ({ cookies, request, locals: { supabase } }) => {
-		console.log('XX')
 		const eventId = cookies.get("eventId");
 		if (!eventId) throw new Error("no event in cookies??");
 		let formData = await request.formData();
@@ -73,6 +74,27 @@ export const actions = {
 			success: "Published form successfully",
 		};
 	},
+	updateRedirectUrl: async ({ cookies, request, locals: {supabase} }) => {
+		try{
+
+			const eventId = cookies.get("eventId");
+			if (!eventId) throw new Error("no event in cookies??");
+			let formData = await request.formData();
+			let redirectUrl: any = formData.get("redirectUrl");
+			const userId = (await supabase.auth.getUser()).data.user?.id;
+			// Get current form data, compare if there is anything to update even...
+			const { data, error } = await supabase
+			.from("events")
+			.update([{redirectUrl}])
+			// Get by event ID
+			.eq("id", eventId)
+			.eq("ownerId", userId);
+			if (error) throw new Error(error.message);
+			return {success: "successfully updated redirect"}
+		} catch (error){
+			throw new Error("something went wrong")
+		}
+	}
 } satisfies Actions;
 
 function arraysEqual(arr1: Question[], arr2: Question[]) {

@@ -13,6 +13,7 @@
 	import FileUpload from "../../../../../components/formItems/FileUpload.svelte";
 	import Checkboxes from "../../../../../components/formItems/Checkboxes.svelte";
 	import QuestionSelector from "../../../../../components/formItems/QuestionSelector.svelte";
+	import SubmissionScreen from "../../../../../components/formItems/SubmissionScreen.svelte";
 	export let data;
 	export let form;
 
@@ -78,7 +79,8 @@
 	let hoverPublish: boolean;
 	let hoveredQuestion: number;
 
-	$: console.log(questions);
+	let showSubmissionScreen: boolean = false;
+	$: console.log(showSubmissionScreen)
 </script>
 
 <!-- ADD SKELETONS IF NOT BROTHER -->
@@ -138,8 +140,11 @@
 						on:mouseover={() => {
 							hoveredQuestion = index;
 						}}
-						on:click={() => (selectedQuestion = index)}
-						class={`h-15 flex justify-around py-1 w-60 border-b hover:bg-gray-300 ${selectedQuestion == index ? "bg-gray-300/60" : ""}`}
+						on:click={() => {
+							showSubmissionScreen = false;
+							selectedQuestion = index;
+						}}
+						class={`h-16 flex justify-around py-1 w-60 border-b hover:bg-gray-300 ${selectedQuestion == index ? "bg-gray-300/60" : ""}`}
 					>
 						<div class="w-1/4 flex flex-col items-center justify-around h-full">
 							<p class="font-semibold text-sm">{question.id}</p>
@@ -153,19 +158,31 @@
 					</button>
 				{/each}
 			</section>
-			<button
-				class="flex justify-center w-full"
-				on:click={() => {
-					showNewQuestionModal = true;
-				}}>Add Question</button
-			>
+			<div class="flex flex-col w-full">
+				<button
+					class="flex justify-center w-full hover:bg-gray-300 h-10 border-b items-center text-lg font-medium"
+					on:click={() => (showSubmissionScreen = true)}
+				>
+					Submission screen
+				</button>
+				<button
+					class="flex justify-center w-full hover:bg-gray-300 h-10 border-b items-center text-lg font-medium"
+					on:click={() => {
+						showNewQuestionModal = true;
+					}}>Add Question</button
+				>
+			</div>
 		</div>
 		<!-- Main section showing current question. -->
 		<section class="flex justify-center items-center w-full">
-			<div class="w-[30rem] flex flex-col items-start justify-start">
-				<p class="text-2xl">{questions[selectedQuestion].title}</p>
-				<QuestionSelector question={questions[selectedQuestion]} />
-			</div>
+			{#if !showSubmissionScreen}
+				<div class="w-[30rem] flex flex-col items-start justify-start">
+					<p class="text-2xl">{questions[selectedQuestion].title}</p>
+					<QuestionSelector question={questions[selectedQuestion]} />
+				</div>
+			{:else}
+				<SubmissionScreen {eventName} redirectUrl={data.redirectUrl} editable={true} />
+			{/if}
 		</section>
 	</div>
 	{#if showNewQuestionModal}

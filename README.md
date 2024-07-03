@@ -24,15 +24,14 @@ This is my repo for building out components. I'll merge it with my auth repo in 
 - Change all `throw new Error (error.message)` to `return fail(error.code, error.message)`
 - UI Overhaul
 - Make it responsive (im cooked)
-- Make sure when publishing form, a new ID is being created and that the old one is added to the old list if there are responses for it 
 - Add deletion / edit for form questions in (app) without breaking shit
+- Redirect Link in settings tab
 
 
 ### Issues
 - Right now my [event] slug sometimes redirects to favicon.png and messes up the routing. see [issue](https://github.com/sveltejs/kit/issues/3748) - Hasn't really been an issue.
-- Unexpected json when publishing more than once (something to do with use:enhance perhaps?)
 - Weird side effect, `options` not changing when selecting same type back to back.. `(app)/form/page.svelte`
-- Keyboard navigation is kind of broken right now.
+- Keyboard navigation for `(public)` forms is kind of broken right now.
 
 
 ## Design

@@ -11,19 +11,27 @@
 	import Paragraph from "../../../components/formItems/Paragraph.svelte";
 	import DatePicker from "../../../components/formItems/DatePicker.svelte";
 	import { page } from "$app/stores";
+	import { Toaster, toast } from "svelte-french-toast";
+	import SubmissionScreen from "../../../components/formItems/SubmissionScreen.svelte";
 	let slug = $page.params["formSlug"];
 	export let data;
 
 	let questions: Question[];
 	$: questions = data.questions;
 	let answers: any;
+	let eventName: string
+	$: eventName = data.eventName
+
+
 
 	$: if (browser) {
+		// Local storage unused now but soon for saving answers
 		localStorage.setItem("questions", JSON.stringify(questions));
 		localStorage.setItem("answers", JSON.stringify(answers));
 		document.addEventListener("keydown", handleNext);
 	}
 
+	// Need to reset this on each element change
 	let nextButton: HTMLButtonElement;
 	function handleNext(event: KeyboardEvent) {
 		if (event.key === "Enter") {
@@ -43,6 +51,8 @@
 	$: activeQuestion = questions[currentQuestionId];
 	$: previousQuestion = questions[currentQuestionId - 1];
 
+	let submitted: boolean = false;
+	let redirectUrl: string | null;
 	async function handleSubmit() {
 		// not very DRY of me... (see handleNext)
 		if (activeQuestion.required == true && currentAnswer == undefined) {
@@ -62,11 +72,9 @@
 		});
 		let responseData = await response.json();
 		if (responseData.success) {
-			// Show the submission screen :D
-			console.log("submitted data!");
-		}
-		else{
-			// Make toast error
+			submitted = true;
+		} else {
+			toast.error("Error submitting. Try again");
 		}
 	}
 
@@ -100,6 +108,9 @@
 </script>
 
 <div class="absolute left-1/2 -translate-x-1/2 bottom-1/2 w-[40rem]">
+	{#if submitted}
+	<SubmissionScreen eventName={eventName} redirectUrl={data.redirectUrl}/>
+	{:else}
 	{#key activeQuestion}
 		<div class="gap-3 flex flex-col justify-start items-start" transition:slide={{ duration: 300 }}>
 			<div class="flex flex-col items-start">
@@ -141,10 +152,7 @@
 				{#if currentQuestionId == questions.length - 1}
 					<button on:click={handleSubmit}>Submit</button>
 				{:else}
-					<button
-						bind:this={nextButton}
-						on:click={nextQuestion}>Next</button
-					>
+					<button bind:this={nextButton} on:click={nextQuestion}>Next</button>
 				{/if}
 			</div>
 			{#if requiredError}
@@ -152,4 +160,6 @@
 			{/if}
 		</div>
 	{/key}
+	{/if}
 </div>
+<Toaster position={"bottom-center"} />
