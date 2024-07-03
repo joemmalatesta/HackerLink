@@ -14,7 +14,7 @@
         selectedResponses = allResponses.filter(response => response.formId == selectedFormId);
         // If no responses (should only happen for new forms), just say none found
         console.log(selectedResponses.length)
-        if (!selectedResponses.length > 0) noResponses = true
+        if (selectedResponses.length <= 0) noResponses = true
     }
     
 
