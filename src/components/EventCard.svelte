@@ -17,14 +17,24 @@
 	<input type="text" name="eventId" value={event.id} class="hidden" />
 	<button
 		on:click={submitForm}
-		style={`color: ${event.textColor}; background-color: ${event.primaryColor}; border-color: ${event.secondaryColor}`}
-		class={`border-4 border-spacing-2 w-40 h-40 rounded-md flex flex-col items-center justify-center gap-5`}
+		class="w-full flex flex-start h-12 items-center justify-between hover:bg-gray-200/60 px-1.5 rounded"
 	>
-		<p class="text-2xl font-semibold">{event.eventName}</p>
-		<div class="flex justify-around items-center w-full">
-			<!-- <p>{event.questionCount}</p>
-        <p>{event.submissionCount}</p> -->
-			{event.description}
+		<p class="text-xl font-semibold">{event.eventName} <span class="opacity-30 text-sm">{event.slug}</span> </p>
+
+		<!-- Submissions, questions, last updated -->
+		<div class="flex items-center gap-5">
+			<div class="flex items-center flex-col gap-0.5">
+				<p>{event.draftFormQuestions.length}</p>
+				<p class="text-xs font-medium opacity-30">Questions</p>
+			</div>
+			<div class="flex items-center flex-col gap-0.5">
+				<p>{event.draftFormQuestions.length}</p>
+				<p class="text-xs font-medium opacity-30">Responses</p>
+			</div>
+			<div class="flex items-center flex-col gap-0.5">
+				<p>{event.draftFormQuestions.length}</p>
+				<p class="text-xs font-medium opacity-30">Updated</p>
+			</div>
 		</div>
 	</button>
 </form>

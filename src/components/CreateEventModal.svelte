@@ -44,23 +44,6 @@
 					class={`${formError == 'no description' ? "border-red-500" : ""} focus:placeholder:opacity-0 placeholder:transition-all resize-y max-h-60 p-1 rounded-md border focus:ring-1 ring-gray-600 border-gray-400/60 w-full focus:outline-none focus:border-gray-600 text-gray-600`}
 				/>
 			</div>
-
-			<div class="flex justify-between gap-4">
-				<p>Primary Color</p>
-				<input type="text" class="border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600" bind:value={primaryColor} />
-				<input type="color" name="primaryColor" class="w-12 rounded-md" bind:value={primaryColor} />
-			</div>
-			<div class="flex justify-between gap-4">
-				<p>Secondary Color</p>
-				<input type="text" class="border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600" bind:value={secondaryColor} />
-				<input type="color" name="secondaryColor" class="w-12 rounded-md" bind:value={secondaryColor} />
-			</div>
-			<div class="flex justify-between gap-4 items-center">
-				<p>Text Color</p>
-				<input type="text" class="border-b border-gray-400/60 focus:outline-none focus:border-gray-600 text-gray-600" bind:value={textColor} />
-				<input type="color" name="textColor" class=" rounded-md w-12" bind:value={textColor} />
-			</div>
-
 			<!-- Change button type programatically? to fix double submission  -->
 			<button class="bg-black text-white rounded-md p-1.5 drop-shadow-md w-full">Submit</button>
 		</form>

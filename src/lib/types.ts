@@ -1,12 +1,11 @@
 export interface Event {
-	// Id probably
 	id: string;
 	eventName: string;
 	// submissionCount: number,
-	primaryColor: string;
-	secondaryColor: string;
-	textColor: string;
 	description: string;
+	slug: string;
+	formQuestions?: Question[];
+	draftFormQuestions: Question[];
 }
 
 export interface User {
@@ -34,7 +33,6 @@ export interface Question {
 
 export type QuestionType = "shortAnswer" | "paragraph" | "multipleChoice" | "trueFalse" | "checkBoxes" | "date" | "fileUpload";
 
-
 export interface EventSettings {
 	slug: string;
 	description: string;
@@ -44,7 +42,6 @@ export interface EventSettings {
 	textColor: string;
 }
 
-
 export interface Answer {
 	id: number;
 	title: string;
@@ -52,8 +49,8 @@ export interface Answer {
 }
 
 export interface Response {
-	createdAt: Date,
-	formId: string,
-	response: Answer[],
-	id: number
-}   
+	createdAt: Date;
+	formId: string;
+	response: Answer[];
+	id: number;
+}
