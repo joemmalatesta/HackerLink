@@ -14,6 +14,7 @@
 
 	export let formError;
 	formError = ''
+	let submitClicked: boolean = false
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
@@ -24,7 +25,7 @@
 	on:click|self={() => dialog.close()}
 >
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div class="p-10" on:click|stopPropagation>
+	<div class="p-10 w-[30rem]" on:click|stopPropagation>
 		<h1 class="text-4xl font-semibold mb-5">Create New Event</h1>
 		<form action="?/createNewEvent" method="POST" class="flex flex-col gap-3" use:enhance>
 			<div class="flex flex-col items-start">
@@ -39,13 +40,13 @@
 			<div class="flex flex-col items-start">
 				<p class={`text-sm ${formError == 'no description' ? "text-red-500" : ""}`}>Description</p>
 				<textarea
-					placeholder="Tell us about your event"
+					placeholder="What's this event for?"
 					name="description"
-					class={`${formError == 'no description' ? "border-red-500" : ""} focus:placeholder:opacity-0 placeholder:transition-all resize-y max-h-60 p-1 rounded-md border focus:ring-1 ring-gray-600 border-gray-400/60 w-full focus:outline-none focus:border-gray-600 text-gray-600`}
+					class={`${formError == 'no description' ? "border-red-500" : ""} focus:placeholder:opacity-0 placeholder:transition-all resize-y h-32 p-1 rounded-md border focus:ring-1 ring-gray-600 border-gray-400/60 w-full focus:outline-none focus:border-gray-600 text-gray-600`}
 				/>
 			</div>
 			<!-- Change button type programatically? to fix double submission  -->
-			<button class="bg-black text-white rounded-md p-1.5 drop-shadow-md w-full">Submit</button>
+			<button class="bg-black text-white rounded-md p-1.5 drop-shadow-md w-full" disabled={submitClicked} on:click={() => submitClicked = true}>Submit</button>
 		</form>
 		<!-- svelte-ignore a11y-autofocus -->
 	</div>

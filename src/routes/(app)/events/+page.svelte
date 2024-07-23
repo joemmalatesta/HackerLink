@@ -12,7 +12,9 @@
 	// $: if (form?.error) toast.error(form.error)
 
 	let events: Event[];
-	$: events = data?.events;
+	$: events = data?.events.sort((x, y) => +new Date(x.lastUpdated) - +new Date(y.lastUpdated));
+
+		
 
 	let showModal: boolean = false;
 </script>

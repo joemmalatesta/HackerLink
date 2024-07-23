@@ -13,11 +13,12 @@ export const POST = async ({
 	const body = await request.json();
 	const eventId = body.eventId;
 	const updatedQuestions = JSON.parse(body.updatedQuestions);
+	const lastUpdated = new Date().toLocaleDateString("en-US")
 	const session: Session = await getSession();
 	if (!session) redirect(307, "/auth");
 	const { data, error } = await supabase
 		.from("events")
-		.update([{ draftFormQuestions: updatedQuestions }])
+		.update([{ draftFormQuestions: updatedQuestions, lastUpdated }])
 		// Get by event ID
 		.eq("id", eventId)
 		.eq("ownerId", session.user.id);

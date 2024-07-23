@@ -28,11 +28,11 @@
 				<p class="text-xs font-medium opacity-30">Questions</p>
 			</div>
 			<div class="flex items-center flex-col gap-0.5">
-				<p>{event.draftFormQuestions.length}</p>
+				<p>{event.submissionCount}</p>
 				<p class="text-xs font-medium opacity-30">Responses</p>
 			</div>
 			<div class="flex items-center flex-col gap-0.5">
-				<p>{event.draftFormQuestions.length}</p>
+				<p>{new Date(event.lastUpdated).toLocaleDateString('en-US')}</p>
 				<p class="text-xs font-medium opacity-30">Updated</p>
 			</div>
 		</div>

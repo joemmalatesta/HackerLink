@@ -17,7 +17,7 @@ export const load = async ({ locals: { getSession, supabase } }: { locals: { get
 	if (!session) redirect(307, "/auth");
 	const { data, error } = await supabase
 		.from("events")
-		.select("eventName, description, id, slug, draftFormQuestions")
+		.select("eventName, description, id, slug, draftFormQuestions, submissionCount, lastUpdated")
 		.eq("ownerId", session.user.id);
 
 	if (!data) throw new Error(`${error.message}`);

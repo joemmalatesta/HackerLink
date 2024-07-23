@@ -1,11 +1,12 @@
 export interface Event {
 	id: string;
 	eventName: string;
-	// submissionCount: number,
-	description: string;
+	submissionCount: number;
+	description?: string;
 	slug: string;
 	formQuestions?: Question[];
 	draftFormQuestions: Question[];
+	lastUpdated: Date;
 }
 
 export interface User {
