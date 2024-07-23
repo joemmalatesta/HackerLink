@@ -46,7 +46,7 @@
 				/>
 			</div>
 			<!-- Change button type programatically? to fix double submission  -->
-			<button class="bg-black text-white rounded-md p-1.5 drop-shadow-md w-full" disabled={submitClicked} on:click={() => submitClicked = true}>Submit</button>
+			<button class="bg-black text-white rounded-md p-1.5 drop-shadow-md w-full" on:click={() => submitClicked = true}>Submit</button>
 		</form>
 		<!-- svelte-ignore a11y-autofocus -->
 	</div>

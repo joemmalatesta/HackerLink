@@ -29,7 +29,7 @@
 	}
 </script>
 
-<nav class="flex justify-between items-center py-2 bg-gray-400/30 h-20 px-16">
+<nav class="flex justify-between items-center py-2 border-b-2 border-gray-300/40 h-20 px-16">
 	<a href={session ? "/events" : "/"}><img src="/icon.svg" alt="HackerSight Logo" class="w-14" /></a>
 	<!-- If we're currently in an event, show other options -->
 	{#if session && currentUrl.href.includes("/events/")}
